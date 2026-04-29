@@ -44,6 +44,10 @@ export class ItemInventarioRepository {
     return this.repository.findOne({ where: { productoId, tiendaId } });
   }
 
+  async findByProductoId(productoId: string): Promise<ItemInventario[]> {
+    return this.repository.find({ where: { productoId } });
+  }
+
   async update(
     id: string,
     updates: Partial<ItemInventario>,

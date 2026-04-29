@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { InventarioDisponibilidadClient } from '../../../shared/inventario-client/src';
 import { LogisticaProductosClient } from '../../../shared/logistica-client/src';
 import { TiendaClientMock } from '../clients';
 import {
@@ -24,6 +25,7 @@ export class VentaService {
     private readonly productoExternoRepository: ProductoExternoRepository,
     private readonly tiendaClient: TiendaClientMock,
     private readonly productoClient: LogisticaProductosClient,
+    private readonly inventarioClient: InventarioDisponibilidadClient,
   ) {}
 
   async create(dto: CreateVentaDto): Promise<VentaResponseDto> {
@@ -52,6 +54,15 @@ export class VentaService {
         if (!productoExiste) {
           throw new BadRequestException(
             `Producto con id ${item.productoId} no existe`,
+          );
+        }
+
+        const disponible = await this.inventarioClient.isDisponible(
+          item.productoId,
+        );
+        if (!disponible) {
+          throw new BadRequestException(
+            `Producto con id ${item.productoId} sin stock disponible`,
           );
         }
       }
@@ -122,6 +133,15 @@ export class VentaService {
           if (!productoExiste) {
             throw new BadRequestException(
               `Producto con id ${item.productoId} no existe`,
+            );
+          }
+
+          const disponible = await this.inventarioClient.isDisponible(
+            item.productoId,
+          );
+          if (!disponible) {
+            throw new BadRequestException(
+              `Producto con id ${item.productoId} sin stock disponible`,
             );
           }
         }

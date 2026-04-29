@@ -20,6 +20,7 @@ describe('ItemInventarioService', () => {
       create: jest.fn(),
       findAll: jest.fn(),
       findById: jest.fn(),
+      findByProductoId: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
     };
@@ -323,6 +324,62 @@ describe('ItemInventarioService', () => {
       const result = await service.checkDisponibilidad('item-1', 5);
 
       expect(result).toBe(false);
+    });
+  });
+
+  describe('getDisponibilidadPorProducto', () => {
+    it('should return true when at least one item has positive quantity', async () => {
+      repository.findByProductoId.mockResolvedValue([
+        {
+          id: 'item-1',
+          productoId: 'prod-1',
+          tiendaId: 'tienda-1',
+          cantidad: 0,
+          precioVenta: 100,
+          monedaId: 'usd',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          registrosVenta: [],
+          registrosCompra: [],
+        },
+        {
+          id: 'item-2',
+          productoId: 'prod-1',
+          tiendaId: 'tienda-2',
+          cantidad: 5,
+          precioVenta: 100,
+          monedaId: 'usd',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          registrosVenta: [],
+          registrosCompra: [],
+        },
+      ]);
+
+      await expect(
+        service.getDisponibilidadPorProducto('prod-1'),
+      ).resolves.toBe(true);
+    });
+
+    it('should return false when all items have zero quantity', async () => {
+      repository.findByProductoId.mockResolvedValue([
+        {
+          id: 'item-1',
+          productoId: 'prod-1',
+          tiendaId: 'tienda-1',
+          cantidad: 0,
+          precioVenta: 100,
+          monedaId: 'usd',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          registrosVenta: [],
+          registrosCompra: [],
+        },
+      ]);
+
+      await expect(
+        service.getDisponibilidadPorProducto('prod-1'),
+      ).resolves.toBe(false);
     });
   });
 });

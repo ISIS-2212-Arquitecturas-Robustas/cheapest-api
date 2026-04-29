@@ -17,6 +17,7 @@ describe('ItemInventarioController', () => {
       findById: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
+      getDisponibilidadPorProducto: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -62,6 +63,23 @@ describe('ItemInventarioController', () => {
 
       expect(service.create).toHaveBeenCalledWith(dto);
       expect(result).toEqual(response);
+    });
+  });
+
+  describe('checkDisponibilidad', () => {
+    it('should return disponibilidad payload for productoId', async () => {
+      service.getDisponibilidadPorProducto.mockResolvedValue(true);
+
+      const result = await controller.checkDisponibilidad('prod-1');
+
+      expect(service.getDisponibilidadPorProducto).toHaveBeenCalledWith(
+        'prod-1',
+      );
+      expect(result).toEqual({
+        productoId: 'prod-1',
+        disponible: true,
+        faulting: false,
+      });
     });
   });
 

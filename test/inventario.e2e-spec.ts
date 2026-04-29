@@ -62,5 +62,17 @@ describe('Inventario (e2e)', () => {
       .get('/inventory/items')
       .expect(200);
     expect(listResponse.body).toHaveLength(1);
+
+    const disponibilidadResponse = await request(app.getHttpServer())
+      .get(
+        '/inventory/items/disponibilidad/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      )
+      .expect(200);
+
+    expect(disponibilidadResponse.body).toEqual({
+      productoId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      disponible: true,
+      faulting: false,
+    });
   });
 });

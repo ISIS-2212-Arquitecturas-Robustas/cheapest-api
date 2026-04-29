@@ -90,6 +90,11 @@ export class ItemInventarioService {
     return item.cantidad >= cantidadRequerida;
   }
 
+  async getDisponibilidadPorProducto(productoId: string): Promise<boolean> {
+    const items = await this.itemRepository.findByProductoId(productoId);
+    return items.some((item) => item.cantidad > 0);
+  }
+
   private mapToResponse(item: ItemInventario): ItemInventarioResponseDto {
     return {
       id: item.id,

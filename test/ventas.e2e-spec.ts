@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from '../apps/ventas/src/app.module';
+import { InventarioDisponibilidadClient } from '../libs/shared/inventario-client/src';
 import { LogisticaProductosClient } from '../libs/shared/logistica-client/src';
 import {
   ItemVenta,
@@ -23,6 +24,12 @@ describe('Ventas (e2e)', () => {
       .overrideProvider(LogisticaProductosClient)
       .useValue({
         exists: jest.fn(
+          async (id: string) => id === 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+        ),
+      })
+      .overrideProvider(InventarioDisponibilidadClient)
+      .useValue({
+        isDisponible: jest.fn(
           async (id: string) => id === 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
         ),
       })

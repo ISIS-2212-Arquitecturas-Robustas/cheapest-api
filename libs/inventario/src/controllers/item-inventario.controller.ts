@@ -16,10 +16,30 @@ import {
   UpdateItemInventarioDto,
 } from '../dtos';
 import { ItemInventarioService } from '../services';
+import {
+  applyFaultDelay,
+  isFaulting,
+} from '../../../../apps/inventario/src/fault.middleware';
 
 @Controller('inventory/items')
 export class ItemInventarioController {
   constructor(private readonly itemService: ItemInventarioService) {}
+
+  @Get('disponibilidad/:productoId')
+  async checkDisponibilidad(
+    @Param('productoId') productoId: string,
+  ): Promise<{ productoId: string; disponible: boolean; faulting: boolean }> {
+    await applyFaultDelay();
+    const disponible = await this.itemService.getDisponibilidadPorProducto(
+      productoId,
+    );
+
+    return {
+      productoId,
+      disponible,
+      faulting: isFaulting(),
+    };
+  }
 
   @Post()
   async create(

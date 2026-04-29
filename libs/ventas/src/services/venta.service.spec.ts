@@ -1,5 +1,6 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { InventarioDisponibilidadClient } from '../../../shared/inventario-client/src';
 import { LogisticaProductosClient } from '../../../shared/logistica-client/src';
 import { TiendaClientMock } from '../clients';
 import { CreateVentaDto, QueryVentaDto, UpdateVentaDto } from '../dtos';
@@ -15,6 +16,7 @@ describe('VentaService', () => {
   let productoExternoRepository: jest.Mocked<ProductoExternoRepository>;
   let tiendaClient: jest.Mocked<TiendaClientMock>;
   let productoClient: jest.Mocked<LogisticaProductosClient>;
+  let inventarioClient: jest.Mocked<InventarioDisponibilidadClient>;
 
   beforeEach(async () => {
     const mockVentaRepository = {
@@ -32,6 +34,9 @@ describe('VentaService', () => {
     };
     const mockProductoClient = {
       exists: jest.fn(),
+    };
+    const mockInventarioClient = {
+      isDisponible: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -53,6 +58,10 @@ describe('VentaService', () => {
           provide: LogisticaProductosClient,
           useValue: mockProductoClient,
         },
+        {
+          provide: InventarioDisponibilidadClient,
+          useValue: mockInventarioClient,
+        },
       ],
     }).compile();
 
@@ -61,6 +70,7 @@ describe('VentaService', () => {
     productoExternoRepository = module.get(ProductoExternoRepository);
     tiendaClient = module.get(TiendaClientMock);
     productoClient = module.get(LogisticaProductosClient);
+    inventarioClient = module.get(InventarioDisponibilidadClient);
   });
 
   it('should be defined', () => {
@@ -222,11 +232,13 @@ describe('VentaService', () => {
       tiendaClient.exists.mockResolvedValue(true);
       productoExternoRepository.findById.mockResolvedValue({} as any);
       productoClient.exists.mockResolvedValue(true);
+      inventarioClient.isDisponible.mockResolvedValue(true);
       ventaRepository.create.mockResolvedValue(createdVenta);
 
       const result = await service.create(dto);
 
       expect(productoClient.exists).toHaveBeenCalledWith('producto-1');
+      expect(inventarioClient.isDisponible).toHaveBeenCalledWith('producto-1');
       expect(result.items[0].productoId).toBe('producto-1');
     });
 
@@ -252,6 +264,32 @@ describe('VentaService', () => {
       await expect(service.create(dto)).rejects.toThrow(BadRequestException);
       await expect(service.create(dto)).rejects.toThrow(
         'Producto con id non-existent-producto no existe',
+      );
+    });
+
+    it('should throw BadRequestException when producto has no stock available', async () => {
+      const dto: CreateVentaDto = {
+        tiendaId: 'tienda-1',
+        fechaHora: new Date(),
+        monedaId: 'moneda-1',
+        items: [
+          {
+            productoExternoId: 'prod-ext-1',
+            productoId: 'producto-sin-stock',
+            cantidad: 1,
+            precioUnitario: 10.0,
+          },
+        ],
+      };
+
+      tiendaClient.exists.mockResolvedValue(true);
+      productoExternoRepository.findById.mockResolvedValue({} as any);
+      productoClient.exists.mockResolvedValue(true);
+      inventarioClient.isDisponible.mockResolvedValue(false);
+
+      await expect(service.create(dto)).rejects.toThrow(BadRequestException);
+      await expect(service.create(dto)).rejects.toThrow(
+        'Producto con id producto-sin-stock sin stock disponible',
       );
     });
   });
@@ -439,11 +477,13 @@ describe('VentaService', () => {
       ventaRepository.findById.mockResolvedValue(existingVenta);
       productoExternoRepository.findById.mockResolvedValue({} as any);
       productoClient.exists.mockResolvedValue(true);
+      inventarioClient.isDisponible.mockResolvedValue(true);
       ventaRepository.update.mockResolvedValue(updatedVenta);
 
       const result = await service.update('venta-1', dto);
 
       expect(productoClient.exists).toHaveBeenCalledWith('producto-1');
+      expect(inventarioClient.isDisponible).toHaveBeenCalledWith('producto-1');
       expect(result.items[0].productoId).toBe('producto-1');
     });
 
@@ -479,6 +519,42 @@ describe('VentaService', () => {
       );
       await expect(service.update('venta-1', dto)).rejects.toThrow(
         'Producto con id invalid-producto no existe',
+      );
+    });
+
+    it('should throw BadRequestException when update has productoId without stock', async () => {
+      const existingVenta: Venta = {
+        id: 'venta-1',
+        tiendaId: 'tienda-1',
+        fechaHora: new Date(),
+        total: 100,
+        monedaId: 'moneda-1',
+        items: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      const dto: UpdateVentaDto = {
+        items: [
+          {
+            productoExternoId: 'prod-ext-1',
+            productoId: 'producto-sin-stock',
+            cantidad: 5,
+            precioUnitario: 20.0,
+          },
+        ],
+      };
+
+      ventaRepository.findById.mockResolvedValue(existingVenta);
+      productoExternoRepository.findById.mockResolvedValue({} as any);
+      productoClient.exists.mockResolvedValue(true);
+      inventarioClient.isDisponible.mockResolvedValue(false);
+
+      await expect(service.update('venta-1', dto)).rejects.toThrow(
+        BadRequestException,
+      );
+      await expect(service.update('venta-1', dto)).rejects.toThrow(
+        'Producto con id producto-sin-stock sin stock disponible',
       );
     });
   });

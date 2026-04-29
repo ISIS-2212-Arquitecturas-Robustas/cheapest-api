@@ -12,6 +12,7 @@ import { ProductoExternoController, VentaController } from './controllers';
 // Clients Mock
 import { TiendaClientMock } from './clients';
 import { repositoryProviders } from './repositories/repository.providers';
+import { InventarioDisponibilidadClient } from '../../shared/inventario-client/src';
 import { LogisticaProductosClient } from '../../shared/logistica-client/src';
 
 @Module({
@@ -27,6 +28,7 @@ import { LogisticaProductosClient } from '../../shared/logistica-client/src';
     // Mock Clients
     TiendaClientMock,
     LogisticaProductosClient,
+    InventarioDisponibilidadClient,
   ],
   exports: [VentaService],
 })
