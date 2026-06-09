@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CognitoAuthModule } from '../../../libs/shared/auth/src';
 import { DatabaseModule } from '../../../libs/shared/database/src';
 import { VentasModule } from '../../../libs/ventas/src';
 import {
@@ -11,7 +12,7 @@ import { HealthController } from './health.controller';
 const VENTAS_ENTITIES = [ItemVenta, ProductoExterno, Venta];
 
 @Module({
-  imports: [DatabaseModule.forRoot(VENTAS_ENTITIES), VentasModule],
+  imports: [CognitoAuthModule, DatabaseModule.forRoot(VENTAS_ENTITIES), VentasModule],
   controllers: [HealthController],
 })
 export class AppModule {}

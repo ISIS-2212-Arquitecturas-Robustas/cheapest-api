@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@app/auth": ["libs/shared/auth/src/index.ts"],
+      "@app/auth/*": ["libs/shared/auth/src/*"]
+    },
     "module": "commonjs",
     "moduleResolution": "node",
     "resolvePackageJsonExports": false,

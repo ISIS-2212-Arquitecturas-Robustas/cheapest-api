@@ -16,7 +16,9 @@ import {
   VentaResponseDto,
 } from '../dtos';
 import { VentaService } from '../services';
+import { Roles } from '../../../shared/auth/src';
 
+@Roles('admin', 'operador')
 @Controller('ventas/ventas')
 export class VentaController {
   constructor(private readonly ventaService: VentaService) {}
@@ -51,6 +53,7 @@ export class VentaController {
     return this.ventaService.update(id, dto);
   }
 
+  @Roles('admin')
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
     return this.ventaService.delete(id);

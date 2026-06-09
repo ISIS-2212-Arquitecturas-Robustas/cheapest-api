@@ -16,7 +16,9 @@ import {
   UpdatePedidoDto,
 } from '../dtos';
 import { PedidoService } from '../services';
+import { Roles } from '../../../shared/auth/src';
 
+@Roles('admin', 'operador')
 @Controller('logistics/pedidos')
 export class PedidoController {
   constructor(private readonly pedidoService: PedidoService) {}
@@ -51,6 +53,7 @@ export class PedidoController {
     return this.pedidoService.update(id, dto);
   }
 
+  @Roles('admin')
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
     return this.pedidoService.delete(id);
