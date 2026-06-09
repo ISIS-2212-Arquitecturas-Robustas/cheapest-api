@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "16e9d70e-cfa2-4c2d-aca9-b80013f04aab",
+    "_postman_id": "0439267b-5abd-482f-bccd-c086d1d14017",
     "name": "Chiper API - Complete Collection",
     "description": "Complete collection for testing all Chiper API endpoints including Inventory, Logistics, and Sales",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29659642"
   },
   "item": [
     {
@@ -11,7 +12,6 @@
       "item": [
         {
           "name": "Get Health Check",
-          "id": "0324f096-14cb-4336-b03a-e25a246f0164",
           "request": {
             "method": "GET",
             "header": [],
@@ -28,15 +28,13 @@
           },
           "response": []
         }
-      ],
-      "id": "8e2cf4eb-98a3-4590-b6d8-9c7dbe007435"
+      ]
     },
     {
       "name": "Inventory Items",
       "item": [
         {
           "name": "Create Item",
-          "id": "5c4ea3e5-febb-4ebc-b8f7-f9507c61e1e5",
           "request": {
             "method": "POST",
             "header": [
@@ -65,7 +63,6 @@
         },
         {
           "name": "Get All Items",
-          "id": "1f5355f2-3803-4e94-b88c-1a10f09f192e",
           "request": {
             "method": "GET",
             "header": [],
@@ -85,7 +82,6 @@
         },
         {
           "name": "Get All Items with Filters",
-          "id": "9510eb6a-8488-4604-8ee7-28a5a860be42",
           "request": {
             "method": "GET",
             "header": [],
@@ -117,7 +113,6 @@
         },
         {
           "name": "Get Item by ID",
-          "id": "b5872cf3-d3cd-4e28-9d74-a369eac731d9",
           "request": {
             "method": "GET",
             "header": [],
@@ -138,7 +133,6 @@
         },
         {
           "name": "Update Item",
-          "id": "03c5126b-ae4f-437b-ba62-ff33a4b293b0",
           "request": {
             "method": "PATCH",
             "header": [
@@ -168,7 +162,6 @@
         },
         {
           "name": "Delete Item",
-          "id": "88197f13-9d2e-4f97-ab1c-dc128852ad0a",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -187,15 +180,13 @@
           },
           "response": []
         }
-      ],
-      "id": "d3e663d4-281c-4540-b190-6c49236d72f7"
+      ]
     },
     {
       "name": "Registro Compras",
       "item": [
         {
           "name": "Create Compra",
-          "id": "579651bb-f760-44dd-8124-ad29897d4877",
           "request": {
             "method": "POST",
             "header": [
@@ -224,7 +215,6 @@
         },
         {
           "name": "Get All Compras",
-          "id": "7e49d27e-ac90-4c6d-873d-43cd90fa8e2a",
           "request": {
             "method": "GET",
             "header": [],
@@ -244,7 +234,6 @@
         },
         {
           "name": "Get All Compras with Filters",
-          "id": "3f0c98e6-a6a8-496a-83c3-e09ba8e85845",
           "request": {
             "method": "GET",
             "header": [],
@@ -276,7 +265,6 @@
         },
         {
           "name": "Get Compra by ID",
-          "id": "428b81f7-c28f-4e41-9e8b-cd86edec3a18",
           "request": {
             "method": "GET",
             "header": [],
@@ -297,7 +285,6 @@
         },
         {
           "name": "Update Compra",
-          "id": "0c0de3c0-5a10-4182-8c2f-3f2be6c7f399",
           "request": {
             "method": "PATCH",
             "header": [
@@ -327,7 +314,6 @@
         },
         {
           "name": "Delete Compra",
-          "id": "b7a30392-891c-474d-ac83-a454d7081cc6",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -346,15 +332,13 @@
           },
           "response": []
         }
-      ],
-      "id": "29314be9-4079-424c-ba18-62a53b11d8cd"
+      ]
     },
     {
       "name": "Registro Ventas",
       "item": [
         {
           "name": "Create Venta",
-          "id": "e52c87da-4617-4cf9-bc10-1b301e808de4",
           "request": {
             "method": "POST",
             "header": [
@@ -383,7 +367,6 @@
         },
         {
           "name": "Get All Ventas",
-          "id": "ca1cdc82-f9c2-4595-98fc-f258afd3758e",
           "request": {
             "method": "GET",
             "header": [],
@@ -403,7 +386,6 @@
         },
         {
           "name": "Get All Ventas with Filters",
-          "id": "7a5f7366-a338-45d6-85a0-fea575e07918",
           "request": {
             "method": "GET",
             "header": [],
@@ -435,7 +417,6 @@
         },
         {
           "name": "Get Venta by ID",
-          "id": "499026fc-b864-47a8-8be3-c37c1f34b015",
           "request": {
             "method": "GET",
             "header": [],
@@ -456,7 +437,6 @@
         },
         {
           "name": "Update Venta",
-          "id": "235bed45-685c-4eb8-8d6f-cfdeeec66570",
           "request": {
             "method": "PATCH",
             "header": [
@@ -486,7 +466,6 @@
         },
         {
           "name": "Delete Venta",
-          "id": "c3eba658-86d7-4fe3-9792-2b6bababe9ae",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -505,56 +484,16 @@
           },
           "response": []
         }
-      ],
-      "id": "6eb0e88d-54d9-40ff-96cd-5e0c39fc5372"
+      ]
     },
     {
       "name": "Logistics",
       "item": [
         {
-          "name": "Tendero",
-          "item": [
-            {
-              "name": "Get Productos Disponibles",
-              "id": "bb67bbf4-9fe0-4327-9a30-6ff756395a02",
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/%20%20%20/productos-disponibles?tiendaId={{tienda_id}}&zona=Zona Norte",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "%20%20%20",
-                    "productos-disponibles"
-                  ],
-                  "query": [
-                    {
-                      "key": "tiendaId",
-                      "value": "{{tienda_id}}",
-                      "description": "Filter by store ID"
-                    },
-                    {
-                      "key": "zona",
-                      "value": "Zona Norte",
-                      "description": "Filter by catalog zone"
-                    }
-                  ]
-                },
-                "description": "Get available products for a store and zone using the current tendero endpoint path."
-              },
-              "response": []
-            }
-          ],
-          "id": "7e6de2b8-dd13-4f7c-8c3e-0cebb75f9c3c"
-        },
-        {
           "name": "Catalogos",
           "item": [
             {
               "name": "Create Catalogo",
-              "id": "3a52659c-1b1b-40b8-8e97-099683f39fd6",
               "request": {
                 "method": "POST",
                 "header": [
@@ -583,7 +522,6 @@
             },
             {
               "name": "Get All Catalogos",
-              "id": "48cebe9b-ce3b-4237-8d10-56b4c8bf3b36",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -603,7 +541,6 @@
             },
             {
               "name": "Get Catalogo by ID",
-              "id": "7ff1e490-506e-4c98-b090-7db74701f149",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -624,7 +561,6 @@
             },
             {
               "name": "Update Catalogo",
-              "id": "f69e7a29-748a-47a7-bbee-5ae8e0e53339",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -654,7 +590,6 @@
             },
             {
               "name": "Delete Catalogo",
-              "id": "c980fd3e-92c7-4d42-98de-c2b75b401af0",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -673,15 +608,13 @@
               },
               "response": []
             }
-          ],
-          "id": "94681e0b-0e8d-4bba-bf86-238279a6de8d"
+          ]
         },
         {
           "name": "Catalogo Productos",
           "item": [
             {
               "name": "Add Producto to Catalogo",
-              "id": "e11f49b6-8632-4ae8-9583-41920464e344",
               "request": {
                 "method": "POST",
                 "header": [
@@ -712,7 +645,6 @@
             },
             {
               "name": "Get Productos by Catalogo",
-              "id": "a72564e0-e5de-48aa-8d1c-7d331f18bf6f",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -734,7 +666,6 @@
             },
             {
               "name": "Remove Producto from Catalogo",
-              "id": "a69b521f-c104-4085-b7b5-4e765c1d8a39",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -755,15 +686,13 @@
               },
               "response": []
             }
-          ],
-          "id": "3bf1ae05-088a-49ac-bf39-3c77be0d7c4e"
+          ]
         },
         {
           "name": "Despachos",
           "item": [
             {
               "name": "Create Despacho",
-              "id": "1654de3f-2731-4fbc-9cbc-6e41063fe7c8",
               "request": {
                 "method": "POST",
                 "header": [
@@ -792,7 +721,6 @@
             },
             {
               "name": "Get All Despachos",
-              "id": "a2a000fe-a291-4d3c-8362-af98798f0639",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -812,7 +740,6 @@
             },
             {
               "name": "Get Despacho by ID",
-              "id": "f90d43a9-829d-428a-a0ce-8f82f6cbfedc",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -833,7 +760,6 @@
             },
             {
               "name": "Update Despacho",
-              "id": "eb86fe14-9193-496a-9a02-a7a3397a8ac4",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -863,7 +789,6 @@
             },
             {
               "name": "Delete Despacho",
-              "id": "ae30e170-9a8c-4cb7-ae2e-73cbe43cc0be",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -882,15 +807,13 @@
               },
               "response": []
             }
-          ],
-          "id": "d7a635d0-1920-4eee-a89e-932f15056b77"
+          ]
         },
         {
           "name": "Disponibilidad Zona",
           "item": [
             {
               "name": "Create Disponibilidad Zona",
-              "id": "04e3c319-e75d-4b13-9772-17046f4ab248",
               "request": {
                 "method": "POST",
                 "header": [
@@ -919,7 +842,6 @@
             },
             {
               "name": "Get All Disponibilidad Zona",
-              "id": "52da6bf7-c573-4857-b427-5d2353a75435",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -939,7 +861,6 @@
             },
             {
               "name": "Get Disponibilidad Zona by ID",
-              "id": "3968c63e-1247-4ef7-aae0-9f092151a5cf",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -960,7 +881,6 @@
             },
             {
               "name": "Update Disponibilidad Zona",
-              "id": "8e4a48bc-a2a8-4bc1-868b-619a8499a92c",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -990,7 +910,6 @@
             },
             {
               "name": "Delete Disponibilidad Zona",
-              "id": "f99cd7c1-f895-4e40-b002-aeb48efbde47",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1009,15 +928,13 @@
               },
               "response": []
             }
-          ],
-          "id": "16245fd6-0d7a-4e7d-afd0-9d323a4cd392"
+          ]
         },
         {
           "name": "Notas Credito",
           "item": [
             {
               "name": "Create Nota Credito",
-              "id": "09a2360d-38a7-42b4-8687-3bee36fbb305",
               "request": {
                 "method": "POST",
                 "header": [
@@ -1028,7 +945,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"pedidoId\": \"{{pedido_id}}\",\n  \"numeroDocumento\": \"NC-2026-001\",\n  \"fecha\": \"2026-02-11T10:00:00.000Z\",\n  \"motivo\": \"productoVencido\",\n  \"monto\": 50.00,\n  \"monedaId\": \"{{moneda_id}}\",\n  \"evidencia\": \"Foto del producto dañado\"\n}"
+                  "raw": "{\n  \"pedidoId\": \"{{pedido_id}}\",\n  \"numeroDocumento\": \"NC-2026-001\",\n  \"fecha\": \"2026-02-11T10:00:00.000Z\",\n  \"motivo\": \"PRODUCTO_DEFECTUOSO\",\n  \"monto\": 50.00,\n  \"monedaId\": \"{{moneda_id}}\",\n  \"evidencia\": \"Foto del producto dañado\"\n}"
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/notas-credito",
@@ -1046,7 +963,6 @@
             },
             {
               "name": "Get All Notas Credito",
-              "id": "e6cd7a34-c128-4309-8875-32cb6411895a",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1066,7 +982,6 @@
             },
             {
               "name": "Get Nota Credito by ID",
-              "id": "04b141dd-3e19-4ad1-a525-b49b07a4398f",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1087,7 +1002,6 @@
             },
             {
               "name": "Update Nota Credito",
-              "id": "1eda7be2-84b2-47d2-8e36-7beee9051b7d",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -1117,7 +1031,6 @@
             },
             {
               "name": "Delete Nota Credito",
-              "id": "564cad57-ab9f-4f3f-bc08-0c2dc58f5a7b",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1136,15 +1049,13 @@
               },
               "response": []
             }
-          ],
-          "id": "39645f64-684c-4ef7-916c-9cf93a440b13"
+          ]
         },
         {
           "name": "Pedidos",
           "item": [
             {
               "name": "Create Pedido",
-              "id": "7a1fd58d-609c-43ab-8d7e-b602d184ef43",
               "request": {
                 "method": "POST",
                 "header": [
@@ -1173,7 +1084,6 @@
             },
             {
               "name": "Get All Pedidos",
-              "id": "bd857c8f-cac7-444b-81fa-eb446c4cc518",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1193,7 +1103,6 @@
             },
             {
               "name": "Get Pedido by ID",
-              "id": "6dda1c24-f18d-4875-8ea7-ee44dbcca9aa",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1214,7 +1123,6 @@
             },
             {
               "name": "Update Pedido",
-              "id": "f1773dec-6cf1-4d7d-a42d-e80604f09049",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -1225,7 +1133,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"estado\": \"aprobado\"\n}"
+                  "raw": "{\n  \"estado\": \"CONFIRMADO\"\n}"
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/pedidos/{{pedido_id}}",
@@ -1244,7 +1152,6 @@
             },
             {
               "name": "Delete Pedido",
-              "id": "3f39cfa2-07fd-4b0a-ae08-d610fbbdfc4f",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1263,15 +1170,13 @@
               },
               "response": []
             }
-          ],
-          "id": "c708114c-d87b-4ebc-ac9e-fe2aeffedd67"
+          ]
         },
         {
           "name": "Productos",
           "item": [
             {
               "name": "Create Producto",
-              "id": "afef454a-c7ef-4dfd-8d4a-24957bea624e",
               "request": {
                 "method": "POST",
                 "header": [
@@ -1300,7 +1205,6 @@
             },
             {
               "name": "Get All Productos",
-              "id": "d2f68a76-bbbb-4e78-99a2-557bac926134",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1320,7 +1224,6 @@
             },
             {
               "name": "Get Producto by ID",
-              "id": "8a600b26-5990-47d5-b6b7-207e7ea33ceb",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1341,7 +1244,6 @@
             },
             {
               "name": "Update Producto",
-              "id": "a508e80b-54a0-47d8-8936-bc8d537b2b6f",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -1371,7 +1273,6 @@
             },
             {
               "name": "Delete Producto",
-              "id": "6ebca05f-43d0-49cc-a8ea-8870c071bf69",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1390,15 +1291,13 @@
               },
               "response": []
             }
-          ],
-          "id": "8bd201b3-8a30-4da4-b3f8-5bd42c205011"
+          ]
         },
         {
           "name": "Promociones",
           "item": [
             {
               "name": "Create Promocion",
-              "id": "8228c98b-c785-414e-b236-60dcdec8c898",
               "request": {
                 "method": "POST",
                 "header": [
@@ -1427,7 +1326,6 @@
             },
             {
               "name": "Get All Promociones",
-              "id": "bec3cac9-e96f-42ad-8e15-7b9834e004b5",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1447,7 +1345,6 @@
             },
             {
               "name": "Get Promocion by ID",
-              "id": "42c15b7b-cb83-46d5-a0be-3b89b25de1ac",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1468,7 +1365,6 @@
             },
             {
               "name": "Update Promocion",
-              "id": "33c8a5b5-45c8-4d36-9f0d-ff454d5a14bc",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -1498,7 +1394,6 @@
             },
             {
               "name": "Delete Promocion",
-              "id": "433df704-7925-4fc1-933d-386543b576af",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1517,11 +1412,9 @@
               },
               "response": []
             }
-          ],
-          "id": "bbf62ca3-9184-414d-9ecd-046bcd59c55b"
+          ]
         }
-      ],
-      "id": "53da10bb-1f18-43bb-b7dc-8d26d3c862de"
+      ]
     },
     {
       "name": "Sales (Ventas)",
@@ -1531,7 +1424,6 @@
           "item": [
             {
               "name": "Create Producto Externo",
-              "id": "5366cf4f-4eee-4e5b-9575-3fac245c4ffe",
               "request": {
                 "method": "POST",
                 "header": [
@@ -1560,7 +1452,6 @@
             },
             {
               "name": "Get All Productos Externos",
-              "id": "74f75d0a-e8ce-492a-8ede-4e7f82974e3b",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1580,7 +1471,6 @@
             },
             {
               "name": "Get Productos Externos with Filters",
-              "id": "be2e7043-1ee3-4775-874d-80dccbecfcbb",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1623,7 +1513,6 @@
             },
             {
               "name": "Get Producto Externo by ID",
-              "id": "b04db5a7-2b48-4792-9d30-4d1ca8c9ab59",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1644,7 +1533,6 @@
             },
             {
               "name": "Update Producto Externo",
-              "id": "8d0b490e-d51e-44a2-b05a-6901bff3b85c",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -1674,7 +1562,6 @@
             },
             {
               "name": "Delete Producto Externo",
-              "id": "8cd3029b-e9da-4650-b257-be60e277a101",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1693,15 +1580,13 @@
               },
               "response": []
             }
-          ],
-          "id": "9c3bdd6b-feca-4f36-8b5c-1f6f9ce768ee"
+          ]
         },
         {
           "name": "Ventas",
           "item": [
             {
               "name": "Create Venta",
-              "id": "9ac1fefc-bff0-404b-b2a7-58698144b840",
               "request": {
                 "method": "POST",
                 "header": [
@@ -1730,7 +1615,6 @@
             },
             {
               "name": "Get All Ventas",
-              "id": "78ae9f3b-228f-4edf-be06-36fd89d84a05",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1750,7 +1634,6 @@
             },
             {
               "name": "Get Ventas with Filters",
-              "id": "f415d62f-6f12-44bb-85e3-43d48fac5223",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1793,7 +1676,6 @@
             },
             {
               "name": "Get Venta by ID",
-              "id": "c58d1805-2d38-48ec-a32e-b89fd8023fa5",
               "request": {
                 "method": "GET",
                 "header": [],
@@ -1814,7 +1696,6 @@
             },
             {
               "name": "Update Venta - Items",
-              "id": "1a0b4bc3-25ef-4efc-be5c-dfbbd107a030",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -1844,7 +1725,6 @@
             },
             {
               "name": "Update Venta - Fecha",
-              "id": "40e8ccd5-3373-4d85-9aab-566317410417",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -1874,7 +1754,6 @@
             },
             {
               "name": "Delete Venta",
-              "id": "7100095f-71f1-4076-94c6-ab8bd50f0f3e",
               "request": {
                 "method": "DELETE",
                 "header": [],
@@ -1893,115 +1772,103 @@
               },
               "response": []
             }
-          ],
-          "id": "7b138c8c-88ea-4b37-9c20-f2ac380c331e"
+          ]
         }
-      ],
-      "id": "fff1a07f-e9e2-4def-849b-8df7b0325486"
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
     }
   ],
   "variable": [
     {
-      "id": "bbb8cb07-b1ac-452a-ae4e-a6225b7add32",
       "key": "base_url",
-      "value": "http://localhost:3000",
-      "type": "string"
+      "value": "http://localhost:3000"
     },
     {
-      "id": "b38bd13b-2780-4023-9f49-dd8083ba6d9b",
       "key": "producto_id",
-      "value": "3c726f6c-1ed9-471a-92d0-2a234e8303ad",
-      "type": "string"
+      "value": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
     },
     {
-      "id": "8bc115a5-6ec1-4bd6-8967-625cf03b547f",
       "key": "tienda_id",
-      "value": "862bd02f-046f-40f6-bdf3-ab58f388337a",
-      "type": "string"
+      "value": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
     },
     {
-      "id": "36f95af5-16ea-45a3-9ea7-6eb315567821",
       "key": "moneda_id",
-      "value": "cccccccc-cccc-cccc-cccc-cccccccccccc",
-      "type": "string"
+      "value": "cccccccc-cccc-cccc-cccc-cccccccccccc"
     },
     {
-      "id": "48eff588-451d-4012-b375-2296ef3370b3",
       "key": "item_id",
-      "value": "cccb8cac-bc7f-49e6-8658-93b917282f60",
-      "type": "string"
+      "value": "11111111-1111-1111-1111-111111111111"
     },
     {
-      "id": "84f74b9c-4d15-4688-9fac-0d77f11dfdda",
       "key": "compra_id",
-      "value": "dddddddd-dddd-dddd-dddd-dddddddddddd",
-      "type": "string"
+      "value": "dddddddd-dddd-dddd-dddd-dddddddddddd"
     },
     {
-      "id": "92bb32f1-a839-45ee-b4b5-ada50a7bfbe7",
       "key": "venta_id",
-      "value": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
-      "type": "string"
+      "value": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"
     },
     {
-      "id": "f64f911c-b7f1-4ca8-b391-308e068c4a67",
       "key": "compra_registro_id",
-      "value": "31a2ad91-46f5-4843-b0be-df6676eee479",
-      "type": "string"
+      "value": "c1111111-1111-1111-1111-111111111111"
     },
     {
-      "id": "8d36c125-16c5-48b4-ab03-e4a0982c11ed",
       "key": "venta_registro_id",
-      "value": "b8557555-f0f4-4dfe-9903-aa94e1603317",
-      "type": "string"
+      "value": "v1111111-1111-1111-1111-111111111111"
     },
     {
-      "id": "067df565-d48d-4048-b6e6-97d65bf297f6",
       "key": "catalogo_id",
-      "value": "3b594d7b-0cf8-4bfa-878e-4160650bf308",
-      "type": "string"
+      "value": "cat11111-1111-1111-1111-111111111111"
     },
     {
-      "id": "fd65e8ca-1668-4cab-845e-cba5724c6214",
       "key": "despacho_id",
-      "value": "3dd154ea-2220-4333-8d1d-fe1e7d70882e",
-      "type": "string"
+      "value": "des11111-1111-1111-1111-111111111111"
     },
     {
-      "id": "3a491b3c-c9ad-4f2e-8df9-020006baab66",
       "key": "pedido_id",
-      "value": "1b22bfb1-6596-4bc7-8601-db4641aff6f1",
-      "type": "string"
+      "value": "ped11111-1111-1111-1111-111111111111"
     },
     {
-      "id": "cfbe896a-094a-498c-a916-680b84d12535",
       "key": "promocion_id",
-      "value": "ed0d8373-334f-42d6-8bb4-1be9df96535c",
-      "type": "string"
+      "value": "pro11111-1111-1111-1111-111111111111"
     },
     {
-      "id": "29971d56-69ab-4916-9874-1978e27d1d73",
       "key": "nota_credito_id",
-      "value": "4ccbf6ca-6b75-40dc-a9e7-b0398eaed093",
-      "type": "string"
+      "value": "not11111-1111-1111-1111-111111111111"
     },
     {
-      "id": "7a5760f1-dc80-4271-8344-22890a244dd1",
       "key": "disponibilidad_zona_id",
-      "value": "d0eb7377-1086-416b-9cc6-fd6a2c912d71",
-      "type": "string"
+      "value": "dis11111-1111-1111-1111-111111111111"
     },
     {
-      "id": "e18e269d-281c-4f1b-ad30-0f2563b4d6a2",
       "key": "producto_externo_id",
-      "value": "pex11111-1111-1111-1111-111111111111",
-      "type": "string"
+      "value": "pex11111-1111-1111-1111-111111111111"
     },
     {
-      "id": "a0fad954-1b6b-4dd5-b229-64e4aeb40695",
       "key": "venta_ventas_id",
-      "value": "ven11111-1111-1111-1111-111111111111",
-      "type": "string"
+      "value": "ven11111-1111-1111-1111-111111111111"
     }
   ]
 }
