@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import { InventarioDisponibilidadClient } from '../../../shared/inventario-client/src';
 import { LogisticaProductosClient } from '../../../shared/logistica-client/src';
@@ -18,6 +19,12 @@ import { Venta } from '../repositories/entities/venta.entity';
 import { ProductoExternoRepository } from '../repositories/producto-externo.repository';
 import { VentaRepository } from '../repositories/venta.repository';
 
+interface PendingStockConfirmationDto {
+  status: 'pending_stock_confirmation';
+  message: string;
+  [key: string]: unknown;
+}
+
 @Injectable()
 export class VentaService {
   constructor(
@@ -28,7 +35,7 @@ export class VentaService {
     private readonly inventarioClient: InventarioDisponibilidadClient,
   ) {}
 
-  async create(dto: CreateVentaDto): Promise<VentaResponseDto> {
+  async create(dto: CreateVentaDto): Promise<VentaResponseDto | PendingStockConfirmationDto> {
     // Validar que la tienda exista
     const tiendaExists = await this.tiendaClient.exists(dto.tiendaId);
     if (!tiendaExists) {
@@ -57,13 +64,27 @@ export class VentaService {
           );
         }
 
-        const disponible = await this.inventarioClient.isDisponible(
-          item.productoId,
-        );
-        if (!disponible) {
-          throw new BadRequestException(
-            `Producto con id ${item.productoId} sin stock disponible`,
+        try {
+          const disponible = await this.inventarioClient.isDisponible(
+            item.productoId,
           );
+          if (!disponible) {
+            throw new BadRequestException(
+              `Producto con id ${item.productoId} sin stock disponible`,
+            );
+          }
+        } catch (error) {
+          // Circuit breaker (sidecar) open or inventario unavailable:
+          // register the sale in degraded mode instead of cascading the failure.
+          if (error instanceof ServiceUnavailableException) {
+            return {
+              ...dto,
+              status: 'pending_stock_confirmation',
+              message:
+                'Pedido registrado. La disponibilidad de stock será confirmada próximamente.',
+            };
+          }
+          throw error;
         }
       }
     }

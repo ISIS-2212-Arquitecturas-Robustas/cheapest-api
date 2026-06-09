@@ -64,6 +64,27 @@ services:
     networks:
       - chiper-network
 
+  # Sidecar: Envoy proxy between ventas and inventario.
+  # Implements retry with exponential backoff + jitter (Táctica 1)
+  # and circuit breaker via outlier detection (Táctica 2)
+  # without touching any NestJS application code.
+  ventas-sidecar:
+    build:
+      context: apps/ventas/sidecar
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      # docker-compose: resolve inventario by service name
+      INVENTARIO_UPSTREAM_HOST: inventario
+      INVENTARIO_UPSTREAM_PORT: 3002
+    ports:
+      - "${VENTAS_SIDECAR_ADMIN_PORT:-9901}:9901"  # Envoy admin — metrics & health
+    depends_on:
+      inventario:
+        condition: service_started
+    networks:
+      - chiper-network
+
   ventas:
     build:
       context: .
@@ -80,10 +101,17 @@ services:
       DB_NAME: ${DB_NAME:-chiper}
       LOGISTICA_BASE_URL: http://logistica:3001
       PORT: 3003
+      # Point ventas at the sidecar proxy, not directly at inventario.
+      # The sidecar adds retry + circuit breaker transparently.
+      INVENTARIO_BASE_URL: http://ventas-sidecar:10000
+      # Timeout must be >= sidecar total timeout (8s) to avoid premature abort
+      INVENTARIO_TIMEOUT_MS: 9000
     depends_on:
       postgres:
         condition: service_healthy
       logistica:
+        condition: service_started
+      ventas-sidecar:
         condition: service_started
     networks:
       - chiper-network
