@@ -1,8 +1,11 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { DataSource } from 'typeorm';
+import { OutboxEntry } from '../../../shared/outbox/src';
 import { TiendaClientMock } from '../clients';
 import {
   CreatePedidoDto,
@@ -11,25 +14,25 @@ import {
   QueryPedidoDto,
   UpdatePedidoDto,
 } from '../dtos';
-import { PedidoRepository, ProductoRepository } from '../repositories';
-import { ItemPedido, Pedido } from '../repositories/entities';
+import { EventoPedidoRepository, PedidoRepository, ProductoRepository } from '../repositories';
+import { EventoPedido, ItemPedido, Pedido } from '../repositories/entities';
 
 @Injectable()
 export class PedidoService {
   constructor(
     private readonly pedidoRepository: PedidoRepository,
     private readonly productoRepository: ProductoRepository,
+    private readonly eventoPedidoRepository: EventoPedidoRepository,
     private readonly tiendaClient: TiendaClientMock,
+    @Inject('DATA_SOURCE') private readonly dataSource: DataSource,
   ) {}
 
   async create(dto: CreatePedidoDto): Promise<PedidoResponseDto> {
-    // Validar que la tienda existe
     const tiendaExists = await this.tiendaClient.exists(dto.tiendaId);
     if (!tiendaExists) {
       throw new BadRequestException(`Tienda con id ${dto.tiendaId} no existe`);
     }
 
-    // Validar que todos los productos existen
     for (const item of dto.items) {
       const producto = await this.productoRepository.findById(item.productoId);
       if (!producto) {
@@ -39,18 +42,51 @@ export class PedidoService {
       }
     }
 
-    // Crear pedido con items
-    const pedidoData: Partial<Pedido> = {
-      identificador: dto.identificador,
-      tiendaId: dto.tiendaId,
-      fechaHoraCreacion: dto.fechaHoraCreacion,
-      montoTotal: dto.montoTotal,
-      monedaId: dto.monedaId,
-      estado: dto.estado,
-      items: dto.items as ItemPedido[],
-    };
+    const pedido = await this.dataSource.transaction(async (manager) => {
+      const newPedido = manager.create(Pedido, {
+        identificador: dto.identificador,
+        tiendaId: dto.tiendaId,
+        fechaHoraCreacion: dto.fechaHoraCreacion,
+        montoTotal: dto.montoTotal,
+        monedaId: dto.monedaId,
+        estado: dto.estado,
+        items: dto.items as ItemPedido[],
+      });
+      const saved = await manager.save(newPedido);
 
-    const pedido = await this.pedidoRepository.create(pedidoData);
+      // Event store (Event Sourcing)
+      await manager.save(EventoPedido, {
+        pedidoId: saved.id,
+        tipo: 'PedidoCreado',
+        payload: {
+          tiendaId: saved.tiendaId,
+          montoTotal: saved.montoTotal,
+          estado: saved.estado,
+          identificador: saved.identificador,
+        },
+        version: 1,
+        occurredAt: new Date(),
+      });
+
+      // Outbox (para publicación confiable en EventBridge)
+      // TODO (estudiante — Tarea 2.1): completar los campos del OutboxEntry
+      // El aggregateId debe ser el id del pedido creado.
+      // El payload debe incluir los datos relevantes para los consumidores.
+      await manager.save(OutboxEntry, {
+        eventSource: 'chiper.logistica',
+        eventType: 'PedidoCreado',
+        aggregateId: saved.id,
+        payload: {
+          pedidoId: saved.id,
+          tiendaId: saved.tiendaId,
+          estado: saved.estado,
+          montoTotal: saved.montoTotal,
+        },
+      });
+
+      return saved;
+    });
+
     return this.mapToResponse(pedido);
   }
 
@@ -73,6 +109,52 @@ export class PedidoService {
       throw new NotFoundException(`Pedido con id ${id} no encontrado`);
     }
 
+    const estadoAnterior = pedido.estado;
+    const estadoCambia = dto.estado !== undefined && dto.estado !== estadoAnterior;
+
+    if (estadoCambia) {
+      const updatedPedido = await this.dataSource.transaction(async (manager) => {
+        await manager.update(Pedido, id, dto as Partial<Pedido>);
+        const updated = await manager.findOne(Pedido, {
+          where: { id },
+          relations: ['items'],
+        });
+
+        // TODO (estudiante — Tarea 1.2): completar appendEvent
+        // Debe calcular la siguiente versión usando eventoPedidoRepository.nextVersion(id)
+        // y guardar el evento PedidoCambioEstado con version, estadoAnterior y estadoNuevo.
+        const version = await this.eventoPedidoRepository.nextVersion(id);
+        await manager.save(EventoPedido, {
+          pedidoId: id,
+          tipo: 'PedidoCambioEstado',
+          payload: {
+            estadoAnterior,
+            estadoNuevo: dto.estado,
+            montoTotal: updated!.montoTotal,
+          },
+          version,
+          occurredAt: new Date(),
+        });
+
+        // Outbox
+        await manager.save(OutboxEntry, {
+          eventSource: 'chiper.logistica',
+          eventType: 'PedidoCambioEstado',
+          aggregateId: id,
+          payload: {
+            pedidoId: id,
+            tiendaId: pedido.tiendaId,
+            estadoAnterior,
+            estadoNuevo: dto.estado,
+            version,
+          },
+        });
+
+        return updated!;
+      });
+      return this.mapToResponse(updatedPedido);
+    }
+
     const updatedPedido = await this.pedidoRepository.update(id, dto);
     return this.mapToResponse(updatedPedido!);
   }
@@ -82,8 +164,17 @@ export class PedidoService {
     if (!pedido) {
       throw new NotFoundException(`Pedido con id ${id} no encontrado`);
     }
-
     await this.pedidoRepository.delete(id);
+  }
+
+  // TODO (estudiante — Tarea 1.3): implementar getHistorial
+  // Debe retornar todos los eventos del pedido ordenados por version ASC.
+  async getHistorial(id: string): Promise<EventoPedido[]> {
+    const pedido = await this.pedidoRepository.findById(id);
+    if (!pedido) {
+      throw new NotFoundException(`Pedido con id ${id} no encontrado`);
+    }
+    return this.eventoPedidoRepository.findByPedidoId(id);
   }
 
   private mapToResponse(pedido: Pedido): PedidoResponseDto {

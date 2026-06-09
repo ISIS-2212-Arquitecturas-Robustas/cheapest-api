@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { DynamoService } from '../../shared/dynamo/src';
 
 // Repositories (Data Layer)
 import {
@@ -24,6 +25,7 @@ import {
 import { TiendaClientMock } from './clients';
 import { repositoryProviders } from './repositories/repository.providers';
 import { LogisticaProductosClient } from '../../shared/logistica-client/src';
+import { VentaCreadaConsumer } from './consumers/venta-creada.consumer';
 
 @Module({
   controllers: [
@@ -44,6 +46,9 @@ import { LogisticaProductosClient } from '../../shared/logistica-client/src';
     // Mock Clients
     TiendaClientMock,
     LogisticaProductosClient,
+    // EDA
+    DynamoService,
+    VentaCreadaConsumer,
   ],
   exports: [ItemInventarioService, RegistroVentaService, RegistroCompraService],
 })

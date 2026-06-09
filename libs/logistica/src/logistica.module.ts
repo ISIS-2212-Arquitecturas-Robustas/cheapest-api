@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { EventBridgeService } from '../../shared/eventbridge/src';
+import { OutboxPublisherService } from '../../shared/outbox/src';
 
 // Clients
 import { TiendaClientMock } from './clients';
@@ -9,6 +11,7 @@ import {
   CatalogoRepository,
   DespachoRepository,
   DisponibilidadZonaRepository,
+  EventoPedidoRepository,
   NotaCreditoRepository,
   PedidoRepository,
   ProductoRepository,
@@ -69,6 +72,7 @@ import { repositoryProviders } from './repositories/repository.providers';
     NotaCreditoRepository,
     DisponibilidadZonaRepository,
     CatalogoProductoRepository,
+    EventoPedidoRepository,
     // Services
     CatalogoService,
     ProductoService,
@@ -79,6 +83,9 @@ import { repositoryProviders } from './repositories/repository.providers';
     DisponibilidadZonaService,
     CatalogoProductoService,
     TenderoService,
+    // EDA
+    EventBridgeService,
+    OutboxPublisherService,
   ],
   exports: [
     CatalogoService,

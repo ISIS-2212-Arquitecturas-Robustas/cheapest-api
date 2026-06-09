@@ -3,6 +3,7 @@ import {
   Catalogo,
   Despacho,
   DisponibilidadZona,
+  EventoPedido,
   NotaCredito,
   Pedido,
   Producto,
@@ -45,6 +46,12 @@ export const repositoryProviders = [
     provide: 'DISPONIBILIDAD_ZONA_REPOSITORY',
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(DisponibilidadZona),
+    inject: ['DATA_SOURCE'],
+  },
+  {
+    provide: 'EVENTO_PEDIDO_REPOSITORY',
+    useFactory: (dataSource: DataSource) =>
+      dataSource.getRepository(EventoPedido),
     inject: ['DATA_SOURCE'],
   },
 ];

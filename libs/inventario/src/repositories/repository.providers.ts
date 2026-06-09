@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import {
   ItemInventario,
+  ProcessedEvent,
   RegistroCompraProductoTienda,
   RegistroVentaProductoTienda,
 } from './entities';
@@ -22,6 +23,12 @@ export const repositoryProviders = [
     provide: 'REGISTRO_VENTA_PRODUCTO_TIENDA_REPOSITORY',
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(RegistroVentaProductoTienda),
+    inject: ['DATA_SOURCE'],
+  },
+  {
+    provide: 'PROCESSED_EVENT_REPOSITORY',
+    useFactory: (dataSource: DataSource) =>
+      dataSource.getRepository(ProcessedEvent),
     inject: ['DATA_SOURCE'],
   },
 ];

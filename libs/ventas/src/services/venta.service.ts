@@ -1,8 +1,11 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { DataSource } from 'typeorm';
+import { OutboxEntry } from '../../../shared/outbox/src';
 import { LogisticaProductosClient } from '../../../shared/logistica-client/src';
 import { TiendaClientMock } from '../clients';
 import {
@@ -24,16 +27,15 @@ export class VentaService {
     private readonly productoExternoRepository: ProductoExternoRepository,
     private readonly tiendaClient: TiendaClientMock,
     private readonly productoClient: LogisticaProductosClient,
+    @Inject('DATA_SOURCE') private readonly dataSource: DataSource,
   ) {}
 
   async create(dto: CreateVentaDto): Promise<VentaResponseDto> {
-    // Validar que la tienda exista
     const tiendaExists = await this.tiendaClient.exists(dto.tiendaId);
     if (!tiendaExists) {
       throw new BadRequestException(`Tienda con id ${dto.tiendaId} no existe`);
     }
 
-    // Validar que todos los productos externos existan
     for (const item of dto.items) {
       const productoExists = await this.productoExternoRepository.findById(
         item.productoExternoId,
@@ -44,11 +46,8 @@ export class VentaService {
         );
       }
 
-      // Validar que el producto del catálogo exista si se proporciona productoId
       if (item.productoId) {
-        const productoExiste = await this.productoClient.exists(
-          item.productoId,
-        );
+        const productoExiste = await this.productoClient.exists(item.productoId);
         if (!productoExiste) {
           throw new BadRequestException(
             `Producto con id ${item.productoId} no existe`,
@@ -57,27 +56,51 @@ export class VentaService {
       }
     }
 
-    // Calcular el total a partir de los items
     const total = dto.items.reduce(
       (sum, item) => sum + item.cantidad * item.precioUnitario,
       0,
     );
 
-    // Crear la venta con sus items (cascade)
-
-    const venta = await this.ventaRepository.create({
-      tiendaId: dto.tiendaId,
-      fechaHora: dto.fechaHora,
-      total,
-      monedaId: dto.monedaId,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      items: dto.items.map((item) => ({
-        productoExternoId: item.productoExternoId || null,
-        productoId: item.productoId || null,
-        cantidad: item.cantidad,
-        precioUnitario: item.precioUnitario,
+    const venta = await this.dataSource.transaction(async (manager) => {
+      const newVenta = manager.create(Venta, {
+        tiendaId: dto.tiendaId,
+        fechaHora: dto.fechaHora,
+        total,
         monedaId: dto.monedaId,
-      })) as any,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        items: dto.items.map((item) => ({
+          productoExternoId: item.productoExternoId || null,
+          productoId: item.productoId || null,
+          cantidad: item.cantidad,
+          precioUnitario: item.precioUnitario,
+          monedaId: dto.monedaId,
+        })) as any,
+      });
+      const saved = await manager.save(newVenta);
+
+      // TODO (estudiante — Tarea 2.1): completar el OutboxEntry para VentaCreada.
+      // El payload debe incluir todos los campos que el consumer de Inventario
+      // necesita para actualizar el read model de DynamoDB.
+      await manager.save(OutboxEntry, {
+        eventSource: 'chiper.ventas',
+        eventType: 'VentaCreada',
+        aggregateId: saved.id,
+        payload: {
+          ventaId: saved.id,
+          tiendaId: saved.tiendaId,
+          total: saved.total,
+          monedaId: saved.monedaId,
+          fechaHora: saved.fechaHora,
+          items: dto.items.map((i) => ({
+            productoId: i.productoId ?? null,
+            productoExternoId: i.productoExternoId,
+            cantidad: i.cantidad,
+            precioUnitario: i.precioUnitario,
+          })),
+        },
+      });
+
+      return saved;
     });
 
     return this.mapToResponse(venta);
@@ -102,7 +125,6 @@ export class VentaService {
       throw new NotFoundException(`Venta con id ${id} no encontrada`);
     }
 
-    // Si se actualizan los items, validar productos externos
     if (dto.items) {
       for (const item of dto.items) {
         const productoExists = await this.productoExternoRepository.findById(
@@ -114,7 +136,6 @@ export class VentaService {
           );
         }
 
-        // Validar que el producto del catálogo exista si se proporciona productoId
         if (item.productoId) {
           const productoExiste = await this.productoClient.exists(
             item.productoId,
@@ -127,13 +148,10 @@ export class VentaService {
         }
       }
 
-      // Recalcular el total
       const newTotal = dto.items.reduce(
         (sum, item) => sum + item.cantidad * item.precioUnitario,
         0,
       );
-
-      // Actualizar items: eliminar los antiguos y crear los nuevos
 
       const updatedVenta = await this.ventaRepository.update(id, {
         ...dto,
@@ -151,7 +169,6 @@ export class VentaService {
       return this.mapToResponse(updatedVenta!);
     }
 
-    // Si solo se actualiza fechaHora
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const updatedVenta = await this.ventaRepository.update(id, dto as any);
     return this.mapToResponse(updatedVenta!);
@@ -162,7 +179,6 @@ export class VentaService {
     if (!venta) {
       throw new NotFoundException(`Venta con id ${id} no encontrada`);
     }
-
     await this.ventaRepository.delete(id);
   }
 

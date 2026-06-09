@@ -15,6 +15,7 @@ import {
   QueryPedidoDto,
   UpdatePedidoDto,
 } from '../dtos';
+import { EventoPedido } from '../repositories/entities';
 import { PedidoService } from '../services';
 
 @Controller('logistics/pedidos')
@@ -54,5 +55,12 @@ export class PedidoController {
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
     return this.pedidoService.delete(id);
+  }
+
+  // TODO (estudiante — Tarea 1.3): este endpoint ya está registrado.
+  // Verifica que getHistorial() en PedidoService esté implementado correctamente.
+  @Get(':id/historial')
+  async getHistorial(@Param('id') id: string): Promise<EventoPedido[]> {
+    return this.pedidoService.getHistorial(id);
   }
 }

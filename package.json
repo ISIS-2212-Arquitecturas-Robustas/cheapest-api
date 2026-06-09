@@ -36,6 +36,10 @@
     "test:e2e:ventas": "jest --config ./test/jest-ventas-e2e.json --runInBand"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1054.0",
+    "@aws-sdk/client-eventbridge": "^3.1054.0",
+    "@aws-sdk/client-sqs": "^3.1054.0",
+    "@aws-sdk/lib-dynamodb": "^3.1054.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",

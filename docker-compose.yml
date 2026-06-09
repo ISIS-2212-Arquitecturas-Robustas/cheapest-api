@@ -34,6 +34,10 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
       DB_NAME: ${DB_NAME:-chiper}
       PORT: 3001
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      EVENTBRIDGE_BUS_NAME: ${EVENTBRIDGE_BUS_NAME:-chiper-bus}
     depends_on:
       postgres:
         condition: service_healthy
@@ -56,6 +60,11 @@ services:
       DB_NAME: ${DB_NAME:-chiper}
       LOGISTICA_BASE_URL: http://logistica:3001
       PORT: 3002
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      SQS_VENTA_CREADA_URL: ${SQS_VENTA_CREADA_URL}
+      DYNAMO_TABLE_RESUMEN: ${DYNAMO_TABLE_RESUMEN:-chiper-resumen-tienda}
     depends_on:
       postgres:
         condition: service_healthy
@@ -79,11 +88,21 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
       DB_NAME: ${DB_NAME:-chiper}
       LOGISTICA_BASE_URL: http://logistica:3001
+      LOGISTICA_TIMEOUT_MS: 8000
+      INVENTARIO_BASE_URL: http://inventario:3002
+      INVENTARIO_TIMEOUT_MS: 8000
       PORT: 3003
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      EVENTBRIDGE_BUS_NAME: ${EVENTBRIDGE_BUS_NAME:-chiper-bus}
+      DYNAMO_TABLE_RESUMEN: ${DYNAMO_TABLE_RESUMEN:-chiper-resumen-tienda}
     depends_on:
       postgres:
         condition: service_healthy
       logistica:
+        condition: service_started
+      inventario:
         condition: service_started
     networks:
       - chiper-network
