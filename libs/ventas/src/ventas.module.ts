@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { ProductoExternoRepository, VentaRepository } from './repositories';
 
 // Services
+import { OutboxHttpPublisherService } from './services/outbox-http-publisher.service';
 import { ProductoExternoService, VentaService } from './services';
 
 // Controllers
@@ -25,6 +26,7 @@ import { LogisticaProductosClient } from '../../shared/logistica-client/src';
     // Services
     ProductoExternoService,
     VentaService,
+    OutboxHttpPublisherService,
     // Mock Clients
     TiendaClientMock,
     LogisticaProductosClient,

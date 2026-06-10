@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { InventarioModule } from '../../../libs/inventario/src';
 import {
   ItemInventario,
+  ProcessedCall,
   RegistroCompraProductoTienda,
   RegistroVentaProductoTienda,
 } from '../../../libs/inventario/src/repositories/entities';
@@ -10,6 +11,7 @@ import { HealthController } from './health.controller';
 
 const INVENTARIO_ENTITIES = [
   ItemInventario,
+  ProcessedCall,
   RegistroCompraProductoTienda,
   RegistroVentaProductoTienda,
 ];

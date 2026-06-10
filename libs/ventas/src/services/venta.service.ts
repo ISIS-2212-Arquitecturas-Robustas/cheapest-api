@@ -1,9 +1,11 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
   ServiceUnavailableException,
 } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 import { InventarioDisponibilidadClient } from '../../../shared/inventario-client/src';
 import { LogisticaProductosClient } from '../../../shared/logistica-client/src';
 import { TiendaClientMock } from '../clients';
@@ -15,6 +17,7 @@ import {
   VentaResponseDto,
 } from '../dtos';
 import { ItemVenta } from '../repositories/entities/item-venta.entity';
+import { OutboxHttpCall } from '../repositories/entities/outbox-http-call.entity';
 import { Venta } from '../repositories/entities/venta.entity';
 import { ProductoExternoRepository } from '../repositories/producto-externo.repository';
 import { VentaRepository } from '../repositories/venta.repository';
@@ -33,6 +36,7 @@ export class VentaService {
     private readonly tiendaClient: TiendaClientMock,
     private readonly productoClient: LogisticaProductosClient,
     private readonly inventarioClient: InventarioDisponibilidadClient,
+    @Inject('DATA_SOURCE') private readonly dataSource: DataSource,
   ) {}
 
   async create(dto: CreateVentaDto): Promise<VentaResponseDto | PendingStockConfirmationDto> {
@@ -53,17 +57,23 @@ export class VentaService {
         );
       }
 
-      // Validar que el producto del catálogo exista si se proporciona productoId
       if (item.productoId) {
-        const productoExiste = await this.productoClient.exists(
-          item.productoId,
-        );
+        const productoExiste = await this.productoClient.exists(item.productoId);
         if (!productoExiste) {
           throw new BadRequestException(
             `Producto con id ${item.productoId} no existe`,
           );
         }
+      }
+    }
 
+    // Verificar disponibilidad de stock para items con productoId.
+    // Si el circuit breaker está abierto (ServiceUnavailableException), se registra
+    // la venta en modo degradado y el Outbox se encarga de entregar el decremento
+    // de stock cuando Inventario se recupere.
+    let isDegraded = false;
+    for (const item of dto.items) {
+      if (item.productoId) {
         try {
           const disponible = await this.inventarioClient.isDisponible(
             item.productoId,
@@ -74,44 +84,68 @@ export class VentaService {
             );
           }
         } catch (error) {
-          // Circuit breaker (sidecar) open or inventario unavailable:
-          // register the sale in degraded mode instead of cascading the failure.
           if (error instanceof ServiceUnavailableException) {
-            return {
-              ...dto,
-              status: 'pending_stock_confirmation',
-              message:
-                'Pedido registrado. La disponibilidad de stock será confirmada próximamente.',
-            };
+            isDegraded = true;
+          } else {
+            throw error;
           }
-          throw error;
         }
       }
     }
 
-    // Calcular el total a partir de los items
     const total = dto.items.reduce(
       (sum, item) => sum + item.cantidad * item.precioUnitario,
       0,
     );
 
-    // Crear la venta con sus items (cascade)
-
-    const venta = await this.ventaRepository.create({
-      tiendaId: dto.tiendaId,
-      fechaHora: dto.fechaHora,
-      total,
-      monedaId: dto.monedaId,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      items: dto.items.map((item) => ({
-        productoExternoId: item.productoExternoId || null,
-        productoId: item.productoId || null,
-        cantidad: item.cantidad,
-        precioUnitario: item.precioUnitario,
+    // TODO (estudiante — Tarea 3.1): revisar esta transacción.
+    // Observa que la Venta y el OutboxHttpCall se guardan en la MISMA transacción
+    // de PostgreSQL. Si la transacción hace commit, el decremento de stock se
+    // entregará eventualmente (at-least-once). Si hace rollback, tampoco queda
+    // ningún OutboxHttpCall pendiente.
+    const venta = await this.dataSource.transaction(async (manager) => {
+      const newVenta = manager.create(Venta, {
+        tiendaId: dto.tiendaId,
+        fechaHora: dto.fechaHora,
+        total,
         monedaId: dto.monedaId,
-      })) as any,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        items: dto.items.map((item) => ({
+          productoExternoId: item.productoExternoId || null,
+          productoId: item.productoId || null,
+          cantidad: item.cantidad,
+          precioUnitario: item.precioUnitario,
+          monedaId: dto.monedaId,
+        })) as any,
+      });
+      const saved = await manager.save(newVenta);
+
+      // Para cada item con productoId: crear un OutboxHttpCall que el publisher
+      // enviará a POST /inventory/ventas/desde-outbox cuando Inventario esté disponible.
+      for (const item of dto.items.filter((i) => i.productoId)) {
+        await manager.save(OutboxHttpCall, {
+          payload: {
+            tiendaId: dto.tiendaId,
+            productoId: item.productoId,
+            ventaId: saved.id,
+            cantidad: item.cantidad,
+            fechaVenta: dto.fechaHora,
+          },
+          status: 'PENDING',
+        });
+      }
+
+      return saved;
     });
 
+    if (isDegraded) {
+      return {
+        ...this.mapToResponse(venta),
+        status: 'pending_stock_confirmation',
+        message:
+          'Pedido registrado. La disponibilidad de stock será confirmada próximamente.',
+      };
+    }
     return this.mapToResponse(venta);
   }
 

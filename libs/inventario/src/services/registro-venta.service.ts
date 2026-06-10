@@ -1,8 +1,11 @@
 import {
   BadRequestException,
+  ConflictException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 import { LogisticaProductosClient } from '../../../shared/logistica-client/src';
 import { TiendaClientMock } from '../clients';
 import {
@@ -11,9 +14,18 @@ import {
   RegistroVentaResponseDto,
   UpdateRegistroVentaDto,
 } from '../dtos';
+import { ProcessedCall } from '../repositories/entities/processed-call.entity';
 import { RegistroVentaProductoTienda } from '../repositories/entities/registro-venta-producto-tienda.entity';
 import { ItemInventarioRepository } from '../repositories/item-inventario.repository';
 import { RegistroVentaRepository } from '../repositories/registro-venta.repository';
+
+interface CreateRegistroVentaDesdeOutboxDto {
+  tiendaId: string;
+  productoId: string;
+  ventaId: string;
+  cantidad: number;
+  fechaVenta: Date;
+}
 
 @Injectable()
 export class RegistroVentaService {
@@ -22,6 +34,9 @@ export class RegistroVentaService {
     private readonly itemRepository: ItemInventarioRepository,
     private readonly productoClient: LogisticaProductosClient,
     private readonly tiendaClient: TiendaClientMock,
+    @Inject('DATA_SOURCE') private readonly dataSource: DataSource,
+    @Inject('PROCESSED_CALL_REPOSITORY')
+    private readonly processedCallRepo: Repository<ProcessedCall>,
   ) {}
 
   async create(dto: CreateRegistroVentaDto): Promise<RegistroVentaResponseDto> {
@@ -124,6 +139,67 @@ export class RegistroVentaService {
     );
 
     await this.registroRepository.delete(id);
+  }
+
+  // TODO (estudiante — Tarea 3.2): revisar este método.
+  // El flujo implementa idempotencia mediante la tabla processed_calls.
+  // Preguntas clave:
+  //   1. ¿Por qué respondemos 409 cuando la clave ya fue procesada?
+  //   2. ¿Qué ocurriría si el proceso muere entre decrementCantidad() y el save de ProcessedCall?
+  //   3. ¿Por qué usamos el id del OutboxHttpCall como clave y no el ventaId?
+  async createDesdeOutbox(
+    dto: CreateRegistroVentaDesdeOutboxDto,
+    idempotencyKey: string,
+  ): Promise<RegistroVentaResponseDto | { status: 'already_processed' }> {
+    // Verificar idempotencia: si esta clave ya fue procesada, rechazar
+    const alreadyProcessed = await this.processedCallRepo.findOne({
+      where: { idempotencyKey },
+    });
+    if (alreadyProcessed) {
+      throw new ConflictException(
+        `La clave ${idempotencyKey} ya fue procesada`,
+      );
+    }
+
+    // Buscar el ItemInventario por productoId + tiendaId
+    const items = await this.itemRepository.findByProductoId(dto.productoId);
+    const item = items.find((i) => i.tiendaId === dto.tiendaId);
+    if (!item) {
+      throw new BadRequestException(
+        `No existe ItemInventario para productoId=${dto.productoId} y tiendaId=${dto.tiendaId}`,
+      );
+    }
+
+    if (item.cantidad < dto.cantidad) {
+      throw new BadRequestException(
+        `Cantidad insuficiente. Disponible: ${item.cantidad}, Requerido: ${dto.cantidad}`,
+      );
+    }
+
+    // Crear el registro de venta, decrementar stock y guardar ProcessedCall
+    // en una sola transacción para garantizar consistencia.
+    const registro = await this.dataSource.transaction(async (manager) => {
+      const newRegistro = manager.create(RegistroVentaProductoTienda, {
+        tiendaId: dto.tiendaId,
+        productoId: dto.productoId,
+        ventaId: dto.ventaId,
+        itemInventarioId: item.id,
+        fechaVenta: dto.fechaVenta,
+        cantidad: dto.cantidad,
+      });
+      const saved = await manager.save(newRegistro);
+
+      await this.itemRepository.decrementCantidad(item.id, dto.cantidad);
+
+      await manager.save(ProcessedCall, {
+        idempotencyKey,
+        ventaId: dto.ventaId,
+      });
+
+      return saved;
+    });
+
+    return this.mapToResponse(registro);
   }
 
   private mapToResponse(
