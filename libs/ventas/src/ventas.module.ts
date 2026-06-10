@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { EventBridgeService } from '../../shared/eventbridge/src';
 import { DynamoService } from '../../shared/dynamo/src';
-import { OutboxPublisherService } from '../../shared/outbox/src';
 
 // Repositories (Data Layer)
 import { ProductoExternoRepository, VentaRepository } from './repositories';
@@ -53,7 +52,6 @@ import { LogisticaProductosClient } from '../../shared/logistica-client/src';
     // EDA
     EventBridgeService,
     DynamoService,
-    OutboxPublisherService,
   ],
   exports: [VentaService],
 })

@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { OutboxEntry } from '../../../shared/outbox/src';
 import { TiendaClientMock } from '../clients';
 import {
   CreatePedidoDto,
@@ -68,22 +67,6 @@ export class PedidoService {
         occurredAt: new Date(),
       });
 
-      // Outbox (para publicación confiable en EventBridge)
-      // TODO (estudiante — Tarea 2.1): completar los campos del OutboxEntry
-      // El aggregateId debe ser el id del pedido creado.
-      // El payload debe incluir los datos relevantes para los consumidores.
-      await manager.save(OutboxEntry, {
-        eventSource: 'chiper.logistica',
-        eventType: 'PedidoCreado',
-        aggregateId: saved.id,
-        payload: {
-          pedidoId: saved.id,
-          tiendaId: saved.tiendaId,
-          estado: saved.estado,
-          montoTotal: saved.montoTotal,
-        },
-      });
-
       return saved;
     });
 
@@ -134,20 +117,6 @@ export class PedidoService {
           },
           version,
           occurredAt: new Date(),
-        });
-
-        // Outbox
-        await manager.save(OutboxEntry, {
-          eventSource: 'chiper.logistica',
-          eventType: 'PedidoCambioEstado',
-          aggregateId: id,
-          payload: {
-            pedidoId: id,
-            tiendaId: pedido.tiendaId,
-            estadoAnterior,
-            estadoNuevo: dto.estado,
-            version,
-          },
         });
 
         return updated!;

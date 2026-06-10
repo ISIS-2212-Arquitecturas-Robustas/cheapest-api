@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { EventBridgeService } from '../../shared/eventbridge/src';
-import { OutboxPublisherService } from '../../shared/outbox/src';
 
 // Clients
 import { TiendaClientMock } from './clients';
@@ -85,7 +84,6 @@ import { repositoryProviders } from './repositories/repository.providers';
     TenderoService,
     // EDA
     EventBridgeService,
-    OutboxPublisherService,
   ],
   exports: [
     CatalogoService,

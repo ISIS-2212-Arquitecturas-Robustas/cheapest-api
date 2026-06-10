@@ -1,13 +1,11 @@
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import {
   DeleteMessageCommand,
   ReceiveMessageCommand,
   SQSClient,
 } from '@aws-sdk/client-sqs';
-import { DataSource, Repository } from 'typeorm';
 import { UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { DynamoService } from '../../../shared/dynamo/src';
-import { ProcessedEvent } from '../repositories/entities/processed-event.entity';
 
 interface VentaCreadaPayload {
   ventaId: string;
@@ -15,7 +13,6 @@ interface VentaCreadaPayload {
   total: number;
   monedaId: string;
   fechaHora: string;
-  outboxId: string;
 }
 
 @Injectable()
@@ -27,9 +24,6 @@ export class VentaCreadaConsumer implements OnModuleInit {
 
   constructor(
     private readonly dynamoService: DynamoService,
-    @Inject('DATA_SOURCE') private readonly dataSource: DataSource,
-    @Inject('PROCESSED_EVENT_REPOSITORY')
-    private readonly processedEventRepo: Repository<ProcessedEvent>,
   ) {
     this.queueUrl = process.env.SQS_VENTA_CREADA_URL ?? '';
     this.tableName =
@@ -76,41 +70,20 @@ export class VentaCreadaConsumer implements OnModuleInit {
     }
   }
 
-  // TODO (estudiante — Tarea 3.2): revisar y completar processMessage.
-  // El esqueleto ya implementa el flujo completo. Asegúrate de entender:
-  //   1. Por qué usamos outboxId como eventId para la idempotencia
-  //   2. Por qué el registro de ProcessedEvent va en una transacción PG separada de DynamoDB
-  //   3. Qué ocurre si el proceso falla entre updateResumenTienda() y el save de ProcessedEvent
+  // Nota: esta implementación usa entrega at-most-once (sin idempotencia).
+  // Si el proceso recibe el mismo mensaje dos veces (at-least-once de SQS),
+  // el resumen en DynamoDB podría incrementarse de más.
+  // El patrón Outbox + Idempotencia que resuelve esto se estudia en el Lab 5.
   private async processMessage(
     body: string,
     receiptHandle: string,
   ): Promise<void> {
     const envelope = JSON.parse(body) as { detail: VentaCreadaPayload };
     const payload = envelope.detail;
-    const eventId = payload.outboxId;
 
-    // Verificar idempotencia
-    const alreadyProcessed = await this.processedEventRepo.findOne({
-      where: { eventId },
-    });
-    if (alreadyProcessed) {
-      this.logger.debug(`Evento ${eventId} ya procesado — skip`);
-      await this.deleteMessage(receiptHandle);
-      return;
-    }
-
-    // Actualizar read model en DynamoDB
     await this.updateResumenTienda(payload);
-
-    // Registrar como procesado en PostgreSQL
-    await this.dataSource.transaction(async (manager) => {
-      await manager.save(ProcessedEvent, {
-        eventId,
-        eventType: 'VentaCreada',
-      });
-    });
-
     await this.deleteMessage(receiptHandle);
+
     this.logger.debug(
       `Procesado VentaCreada ${payload.ventaId} para tienda ${payload.tiendaId}`,
     );

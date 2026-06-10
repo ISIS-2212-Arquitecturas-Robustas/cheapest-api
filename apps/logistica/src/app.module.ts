@@ -11,7 +11,6 @@ import {
   Producto,
   Promocion,
 } from '../../../libs/logistica/src/repositories/entities';
-import { OutboxEntry } from '../../../libs/shared/outbox/src';
 import { DatabaseModule } from '../../../libs/shared/database/src';
 import { HealthController } from './health.controller';
 
@@ -25,7 +24,6 @@ const LOGISTICA_ENTITIES = [
   Pedido,
   Producto,
   Promocion,
-  OutboxEntry,
 ];
 
 @Module({

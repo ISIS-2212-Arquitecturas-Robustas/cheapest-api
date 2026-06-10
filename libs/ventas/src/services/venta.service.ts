@@ -1,11 +1,9 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import { OutboxEntry } from '../../../shared/outbox/src';
+import { EventBridgeService } from '../../../shared/eventbridge/src';
 import { LogisticaProductosClient } from '../../../shared/logistica-client/src';
 import { TiendaClientMock } from '../clients';
 import {
@@ -27,7 +25,7 @@ export class VentaService {
     private readonly productoExternoRepository: ProductoExternoRepository,
     private readonly tiendaClient: TiendaClientMock,
     private readonly productoClient: LogisticaProductosClient,
-    @Inject('DATA_SOURCE') private readonly dataSource: DataSource,
+    private readonly eventBridgeService: EventBridgeService,
   ) {}
 
   async create(dto: CreateVentaDto): Promise<VentaResponseDto> {
@@ -61,46 +59,39 @@ export class VentaService {
       0,
     );
 
-    const venta = await this.dataSource.transaction(async (manager) => {
-      const newVenta = manager.create(Venta, {
-        tiendaId: dto.tiendaId,
-        fechaHora: dto.fechaHora,
-        total,
+    const venta = await this.ventaRepository.create({
+      tiendaId: dto.tiendaId,
+      fechaHora: dto.fechaHora,
+      total,
+      monedaId: dto.monedaId,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      items: dto.items.map((item) => ({
+        productoExternoId: item.productoExternoId || null,
+        productoId: item.productoId || null,
+        cantidad: item.cantidad,
+        precioUnitario: item.precioUnitario,
         monedaId: dto.monedaId,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        items: dto.items.map((item) => ({
-          productoExternoId: item.productoExternoId || null,
-          productoId: item.productoId || null,
-          cantidad: item.cantidad,
-          precioUnitario: item.precioUnitario,
-          monedaId: dto.monedaId,
-        })) as any,
-      });
-      const saved = await manager.save(newVenta);
+      })) as any,
+    });
 
-      // TODO (estudiante — Tarea 2.1): completar el OutboxEntry para VentaCreada.
-      // El payload debe incluir todos los campos que el consumer de Inventario
-      // necesita para actualizar el read model de DynamoDB.
-      await manager.save(OutboxEntry, {
-        eventSource: 'chiper.ventas',
-        eventType: 'VentaCreada',
-        aggregateId: saved.id,
-        payload: {
-          ventaId: saved.id,
-          tiendaId: saved.tiendaId,
-          total: saved.total,
-          monedaId: saved.monedaId,
-          fechaHora: saved.fechaHora,
-          items: dto.items.map((i) => ({
-            productoId: i.productoId ?? null,
-            productoExternoId: i.productoExternoId,
-            cantidad: i.cantidad,
-            precioUnitario: i.precioUnitario,
-          })),
-        },
-      });
-
-      return saved;
+    // Publicación directa a EventBridge — garantía at-most-once.
+    // Si EventBridge no está disponible en este momento, el evento se pierde.
+    await this.eventBridgeService.publish({
+      source: 'chiper.ventas',
+      detailType: 'VentaCreada',
+      detail: {
+        ventaId: venta.id,
+        tiendaId: venta.tiendaId,
+        total: venta.total,
+        monedaId: venta.monedaId,
+        fechaHora: venta.fechaHora,
+        items: dto.items.map((i) => ({
+          productoId: i.productoId ?? null,
+          productoExternoId: i.productoExternoId,
+          cantidad: i.cantidad,
+          precioUnitario: i.precioUnitario,
+        })),
+      },
     });
 
     return this.mapToResponse(venta);
