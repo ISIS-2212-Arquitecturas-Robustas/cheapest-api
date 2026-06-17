@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { CognitoAuthModule } from '../../../libs/shared/auth/src';
 import { LogisticaModule } from '../../../libs/logistica/src';
 import {
@@ -26,7 +27,12 @@ const LOGISTICA_ENTITIES = [
 ];
 
 @Module({
-  imports: [CognitoAuthModule, DatabaseModule.forRoot(LOGISTICA_ENTITIES), LogisticaModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    CognitoAuthModule,
+    DatabaseModule.forRoot(LOGISTICA_ENTITIES),
+    LogisticaModule,
+  ],
   controllers: [HealthController],
 })
 export class AppModule {}
