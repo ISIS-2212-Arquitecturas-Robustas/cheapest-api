@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { InventarioModule } from '../../../libs/inventario/src';
 import {
   ItemInventario,
@@ -17,7 +18,11 @@ const INVENTARIO_ENTITIES = [
 ];
 
 @Module({
-  imports: [DatabaseModule.forRoot(INVENTARIO_ENTITIES), InventarioModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    DatabaseModule.forRoot(INVENTARIO_ENTITIES),
+    InventarioModule,
+  ],
   controllers: [HealthController],
 })
 export class AppModule {}
