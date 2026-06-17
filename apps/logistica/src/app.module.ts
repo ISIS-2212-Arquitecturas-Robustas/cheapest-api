@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { LogisticaModule } from '../../../libs/logistica/src';
 import {
   Catalogo,
@@ -27,7 +28,11 @@ const LOGISTICA_ENTITIES = [
 ];
 
 @Module({
-  imports: [DatabaseModule.forRoot(LOGISTICA_ENTITIES), LogisticaModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    DatabaseModule.forRoot(LOGISTICA_ENTITIES),
+    LogisticaModule,
+  ],
   controllers: [HealthController],
 })
 export class AppModule {}
