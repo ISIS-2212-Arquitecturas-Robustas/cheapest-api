@@ -19,4 +19,4 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 3002
 
-CMD ["node", "dist/apps/inventario/main"]
+CMD ["node", "dist/apps/inventario/src/main"]
