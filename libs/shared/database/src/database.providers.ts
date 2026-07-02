@@ -17,13 +17,16 @@ export function createDataSource(entities: DatabaseEntity[]): DataSource {
     type: 'postgres',
     host: process.env.DB_HOST || '127.0.0.1',
     port: parseInt(process.env.DB_PORT || '5432', 10),
-    username: process.env.DB_USERNAME || 'postgres',
+    username: process.env.DB_USER || process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.DB_NAME || 'chiper',
     entities,
     synchronize: isTrue(process.env.DB_SYNCHRONIZE, true),
     logging: false,
     connectTimeoutMS: parseInt(process.env.DB_CONNECT_TIMEOUT_MS || '5000', 10),
+    ssl: isTrue(process.env.DB_SSL, true)
+      ? { rejectUnauthorized: false }
+      : false,
   });
 }
 
