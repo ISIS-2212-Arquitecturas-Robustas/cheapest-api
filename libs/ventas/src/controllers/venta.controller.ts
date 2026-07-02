@@ -15,7 +15,7 @@ import {
   UpdateVentaDto,
   VentaResponseDto,
 } from '../dtos';
-import { VentaService } from '../services';
+import { PendingStockConfirmationDto, VentaService } from '../services';
 
 @Controller('ventas/ventas')
 export class VentaController {
@@ -25,7 +25,7 @@ export class VentaController {
   async create(
     @Body(new ValidationPipe({ transform: true }))
     dto: CreateVentaDto,
-  ): Promise<VentaResponseDto> {
+  ): Promise<VentaResponseDto | PendingStockConfirmationDto> {
     return this.ventaService.create(dto);
   }
 

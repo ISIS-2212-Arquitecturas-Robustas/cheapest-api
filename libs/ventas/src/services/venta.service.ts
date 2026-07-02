@@ -22,7 +22,7 @@ import { Venta } from '../repositories/entities/venta.entity';
 import { ProductoExternoRepository } from '../repositories/producto-externo.repository';
 import { VentaRepository } from '../repositories/venta.repository';
 
-interface PendingStockConfirmationDto {
+export interface PendingStockConfirmationDto {
   status: 'pending_stock_confirmation';
   message: string;
   [key: string]: unknown;
