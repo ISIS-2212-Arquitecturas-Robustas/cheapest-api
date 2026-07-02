@@ -1,2 +1,2 @@
 export { EventBridgeService } from './eventbridge.service';
-export { ChiperEvent } from './chiper-event.interface';
+export type { ChiperEvent } from './chiper-event.interface';
