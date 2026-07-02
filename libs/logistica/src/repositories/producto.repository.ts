@@ -84,7 +84,7 @@ export class ProductoRepository {
             AND EXISTS (
               SELECT 1
               FROM jsonb_array_elements_text(promo."tiendaIds"::jsonb) AS tid
-              WHERE tid = :tiendaId
+              WHERE tid = CAST(:tiendaId AS text)
             )
         )`,
         { now, tiendaId },
