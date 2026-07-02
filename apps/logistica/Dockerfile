@@ -19,4 +19,4 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 3001
 
-CMD ["node", "dist/apps/logistica/main"]
+CMD ["node", "dist/apps/logistica/src/main"]
