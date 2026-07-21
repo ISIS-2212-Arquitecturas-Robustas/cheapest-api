@@ -19,7 +19,7 @@ export function createDataSource(entities: DatabaseEntity[]): DataSource {
     port: parseInt(process.env.DB_PORT || '5432', 10),
     username: process.env.DB_USER || process.env.DB_USERNAME || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_NAME || 'chiper',
+    database: process.env.DB_NAME || 'cheapest',
     entities,
     synchronize: isTrue(process.env.DB_SYNCHRONIZE, true),
     logging: false,

@@ -35,7 +35,7 @@ process.env.DB_HOST ??= '127.0.0.1';
 process.env.DB_PORT ??= '5432';
 process.env.DB_USERNAME ??= 'postgres';
 process.env.DB_PASSWORD ??= 'postgres';
-process.env.DB_NAME ??= 'chiper';
+process.env.DB_NAME ??= 'cheapest';
 
 async function initializeDataSourceWithRetry(entities: Function[]) {
   let lastError: unknown;
@@ -119,10 +119,14 @@ async function seedDatabase() {
     const sql = fs.readFileSync(sqlPath, 'utf8');
     const statements = sql
       .split(';')
-      .map((statement) => statement.trim())
-      .filter(
-        (statement) => statement.length > 0 && !statement.startsWith('--'),
-      );
+      .map((statement) =>
+        statement
+          .split('\n')
+          .filter((line) => !line.trim().startsWith('--'))
+          .join('\n')
+          .trim(),
+      )
+      .filter((statement) => statement.length > 0);
 
     for (const statement of statements) {
       await dataSource.query(statement);
