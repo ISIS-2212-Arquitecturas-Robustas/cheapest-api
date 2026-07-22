@@ -27,7 +27,7 @@ export class VentaCreadaConsumer implements OnModuleInit {
   ) {
     this.queueUrl = process.env.SQS_VENTA_CREADA_URL ?? '';
     this.tableName =
-      process.env.DYNAMO_TABLE_RESUMEN ?? 'chiper-resumen-tienda';
+      process.env.DYNAMO_TABLE_RESUMEN ?? 'cheapest-resumen-tienda';
     this.sqsClient = new SQSClient({
       region: process.env.AWS_REGION ?? 'us-east-1',
       endpoint: process.env.AWS_ENDPOINT_URL,

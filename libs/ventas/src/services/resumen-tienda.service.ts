@@ -14,7 +14,7 @@ export interface ResumenTiendaDto {
 export class ResumenTiendaService {
   private readonly logger = new Logger(ResumenTiendaService.name);
   private readonly tableName =
-    process.env.DYNAMO_TABLE_RESUMEN ?? 'chiper-resumen-tienda';
+    process.env.DYNAMO_TABLE_RESUMEN ?? 'cheapest-resumen-tienda';
 
   constructor(private readonly dynamoService: DynamoService) {}
 

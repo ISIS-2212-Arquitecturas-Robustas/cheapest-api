@@ -77,7 +77,7 @@ export class VentaService {
     // Publicación directa a EventBridge — garantía at-most-once.
     // Si EventBridge no está disponible en este momento, el evento se pierde.
     await this.eventBridgeService.publish({
-      source: 'chiper.ventas',
+      source: 'cheapest.ventas',
       detailType: 'VentaCreada',
       detail: {
         ventaId: venta.id,

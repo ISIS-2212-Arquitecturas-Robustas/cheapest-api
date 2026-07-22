@@ -3,7 +3,7 @@ import {
   EventBridgeClient,
   PutEventsCommand,
 } from '@aws-sdk/client-eventbridge';
-import { ChiperEvent } from './chiper-event.interface';
+import { CheapestEvent } from './cheapest-event.interface';
 
 @Injectable()
 export class EventBridgeService {
@@ -12,7 +12,7 @@ export class EventBridgeService {
   private readonly busName: string;
 
   constructor() {
-    this.busName = process.env.EVENTBRIDGE_BUS_NAME ?? 'chiper-bus';
+    this.busName = process.env.EVENTBRIDGE_BUS_NAME ?? 'cheapest-bus';
     this.client = new EventBridgeClient({
       region: process.env.AWS_REGION ?? 'us-east-1',
       endpoint: process.env.AWS_ENDPOINT_URL,
@@ -23,7 +23,7 @@ export class EventBridgeService {
     });
   }
 
-  async publish(event: ChiperEvent): Promise<void> {
+  async publish(event: CheapestEvent): Promise<void> {
     try {
       await this.client.send(
         new PutEventsCommand({
