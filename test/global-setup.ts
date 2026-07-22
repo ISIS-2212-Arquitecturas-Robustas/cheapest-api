@@ -11,7 +11,7 @@ export default async () => {
     port: parseInt(process.env.DB_PORT || '3306', 10),
     username: process.env.DB_USERNAME || 'root',
     password: process.env.DB_PASSWORD || 'root',
-    database: process.env.DB_NAME || 'chiper',
+    database: process.env.DB_NAME || 'cheapest',
     entities: [__dirname + '/../src/**/*.entity{.ts,.js}'],
   });
 
@@ -23,7 +23,7 @@ export default async () => {
 
     // Recreate database
     await dataSource.query(
-      `CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME || 'chiper'}\``,
+      `CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME || 'cheapest'}\``,
     );
 
     await dataSource.destroy();

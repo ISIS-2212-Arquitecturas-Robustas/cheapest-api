@@ -1,6 +1,6 @@
 -- ============================================
 -- Script de inicialización con datos de prueba
--- Chiper API - Sistema de Inventario
+-- Cheapest API - Sistema de Inventario
 -- ============================================
 
 -- Este script se ejecuta automáticamente al iniciar el contenedor MySQL
@@ -22,7 +22,7 @@ BEGIN
     WHILE table_exists = 0 AND retry_count < max_retries DO
         SELECT COUNT(*) INTO table_exists
         FROM information_schema.tables 
-        WHERE table_schema = 'chiper' 
+        WHERE table_schema = 'cheapest' 
         AND table_name = 'catalogos';
         
         IF table_exists = 0 THEN

@@ -3,18 +3,18 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: chiper-postgres
+    container_name: cheapest-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-      POSTGRES_DB: ${DB_NAME:-chiper}
+      POSTGRES_DB: ${DB_NAME:-cheapest}
     ports:
       - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - chiper-network
+      - cheapest-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
       interval: 10s
@@ -26,7 +26,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: chiper-api
+    container_name: cheapest-api
     restart: unless-stopped
     ports:
       - "${APP_PORT:-3000}:3000"
@@ -37,13 +37,13 @@ services:
       DB_PORT: 5432
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
-      DB_NAME: ${DB_NAME:-chiper}
+      DB_NAME: ${DB_NAME:-cheapest}
       PORT: 3000
     depends_on:
       postgres:
         condition: service_healthy
     networks:
-      - chiper-network
+      - cheapest-network
     command: >
       sh -c "sleep 5 && npm run start:prod"
 
@@ -52,5 +52,5 @@ volumes:
     driver: local
 
 networks:
-  chiper-network:
+  cheapest-network:
     driver: bridge
