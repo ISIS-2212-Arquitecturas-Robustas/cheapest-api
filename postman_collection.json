@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "Chiper API - Complete Collection",
-    "description": "Complete collection for testing all Chiper API endpoints including Inventory, Logistics, and Sales",
+    "name": "Cheapest API - Complete Collection",
+    "description": "Complete collection for testing all Cheapest API endpoints including Inventory, Logistics, and Sales",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "1"
   },

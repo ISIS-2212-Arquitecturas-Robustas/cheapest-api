@@ -5,13 +5,13 @@ services:
     environment:
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-      POSTGRES_DB: ${DB_NAME:-chiper}
+      POSTGRES_DB: ${DB_NAME:-cheapest}
     ports:
       - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - chiper-network
+      - cheapest-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
       interval: 10s
@@ -32,13 +32,13 @@ services:
       DB_PORT: 5432
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
-      DB_NAME: ${DB_NAME:-chiper}
+      DB_NAME: ${DB_NAME:-cheapest}
       PORT: 3001
     depends_on:
       postgres:
         condition: service_healthy
     networks:
-      - chiper-network
+      - cheapest-network
 
   inventario:
     build:
@@ -53,7 +53,7 @@ services:
       DB_PORT: 5432
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
-      DB_NAME: ${DB_NAME:-chiper}
+      DB_NAME: ${DB_NAME:-cheapest}
       LOGISTICA_BASE_URL: http://logistica:3001
       PORT: 3002
     depends_on:
@@ -62,7 +62,7 @@ services:
       logistica:
         condition: service_started
     networks:
-      - chiper-network
+      - cheapest-network
 
   # Sidecar: Envoy proxy between ventas and inventario.
   # Implements retry with exponential backoff + jitter (Táctica 1)
@@ -83,7 +83,7 @@ services:
       inventario:
         condition: service_started
     networks:
-      - chiper-network
+      - cheapest-network
 
   ventas:
     build:
@@ -98,7 +98,7 @@ services:
       DB_PORT: 5432
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
-      DB_NAME: ${DB_NAME:-chiper}
+      DB_NAME: ${DB_NAME:-cheapest}
       LOGISTICA_BASE_URL: http://logistica:3001
       PORT: 3003
       # Point ventas at the sidecar proxy, not directly at inventario.
@@ -114,12 +114,12 @@ services:
       ventas-sidecar:
         condition: service_started
     networks:
-      - chiper-network
+      - cheapest-network
 
 volumes:
   postgres_data:
     driver: local
 
 networks:
-  chiper-network:
+  cheapest-network:
     driver: bridge
