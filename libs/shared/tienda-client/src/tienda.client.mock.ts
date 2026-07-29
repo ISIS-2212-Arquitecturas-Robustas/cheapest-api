@@ -12,6 +12,30 @@ export interface Tienda {
 @Injectable()
 export class TiendaClientMock {
   private readonly tiendas = new Map<string, Tienda>([
+    // Tiendas del seed (seed.sql): catalogos, pedidos y promociones de ejemplo
+    // referencian estos IDs, por lo que el mock debe reconocerlos.
+    [
+      'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+      {
+        id: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+        nombre: 'Tienda Seed 1',
+        nombreComercial: 'Tienda Seed 1',
+        direccion: 'Calle Seed 100',
+        codigoInterno: 'TS100',
+        rut: '900123456',
+      },
+    ],
+    [
+      'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbc',
+      {
+        id: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbc',
+        nombre: 'Tienda Seed 2',
+        nombreComercial: 'Tienda Seed 2',
+        direccion: 'Calle Seed 200',
+        codigoInterno: 'TS200',
+        rut: '900123457',
+      },
+    ],
     [
       '9a2f2e7b-40c4-4c5f-a37c-baf722e18ab9',
       {
