@@ -1,21 +1,39 @@
 load:
+  # =============================================================
+  # Diseño de datos — Lab 2 (warm-up)
+  # Escenario: Cheapest opera ~3.000 tiendas con ~1.200 referencias.
+  # Para el experimento local se modela una ciudad (80 tiendas, 5 zonas)
+  # con distribución Pareto 80/20: el 20% de tiendas/zonas/productos
+  # concentra el 80% de la actividad.
+  # =============================================================
+
+  # --- Dimensiones del negocio ---
+  tiendas: 80        # 80 tiendas activas en la ciudad simulada (el 20% = 16 tiendas "cabeza" concentran 80% de pedidos)
+  zonas: 5           # Zona Norte, Sur, Oriente, Occidente, Centro. Zona Norte es la cabeza comercial.
+
+  # Distribución no uniforme (Pareto 80/20) sobre tiendas, zonas y productos
+  distribucion:
+    tipo: pareto
+    peso_cabeza: 0.8       # 80% de las asignaciones caen en la cabeza
+    fraccion_cabeza: 0.2   # la cabeza es el 20% del pool
+
   # --- Logística ---
-  productos: 50
-  catalogos: 10
-  catalogos_productos: 100
-  promociones: 30
-  pedidos: 100
-  items_pedido: 300               # ~3 items por pedido en promedio
-  despachos: 50
-  disponibilidad_zona: 100
-  notas_credito: 40
+  productos: 1200            # portafolio actual de Cheapest (enunciado: ~1.200 referencias)
+  catalogos: 40              # ~8 catálogos por zona; Zona Norte concentra más por Pareto
+  catalogos_productos: 24000 # ~600 productos por catálogo (cobertura de la mitad del portafolio por catálogo)
+  promociones: 240           # ~20% del portafolio con promoción activa (evento de promociones)
+  pedidos: 20000             # histórico de ~250 pedidos/tienda en promedio; cabeza ~1000, cola ~60
+  items_pedido: 60000        # ~3 ítems por pedido; productos populares (20%) concentran 80% de los ítems
+  despachos: 10000           # ~la mitad de los pedidos ya despachados
+  disponibilidad_zona: 24000 # disponibilidad por (catálogo, producto) alineada con catalogos_productos
+  notas_credito: 800         # ~4% de pedidos con reclamo/devolución
 
   # --- Inventario ---
-  items_inventario: 200
-  registros_compra_producto_tienda: 300
-  registros_venta_producto_tienda: 400
+  items_inventario: 2000
+  registros_compra_producto_tienda: 5000
+  registros_venta_producto_tienda: 8000
 
   # --- Ventas ---
-  productos_externos: 80
-  ventas: 150
-  items_venta: 450                # ~3 items por venta en promedio
+  productos_externos: 300
+  ventas: 3000
+  items_venta: 9000          # ~3 ítems por venta

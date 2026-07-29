@@ -29,19 +29,45 @@ type LoadSeedKey = (typeof LOAD_SEED_KEYS)[number];
 type LoadSeedCounts = Record<LoadSeedKey, number>;
 type SeedValue = string | number | null | typeof NOW;
 
+interface DistribucionConfig {
+  tipo?: unknown;
+  peso_cabeza?: unknown;
+  fraccion_cabeza?: unknown;
+}
+
 interface LoadSeedConfig {
-  load?: Partial<Record<LoadSeedKey, unknown>>;
+  load?: Partial<Record<LoadSeedKey, unknown>> & {
+    tiendas?: unknown;
+    zonas?: unknown;
+    distribucion?: DistribucionConfig;
+  };
+}
+
+interface ParetoConfig {
+  pesoCabeza: number;
+  fraccionCabeza: number;
 }
 
 @Injectable()
 export class DatabaseSeederService implements OnModuleInit {
   private readonly logger = new Logger(DatabaseSeederService.name);
 
-  private readonly logisticaMonedaId = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
+  private readonly logisticaMonedaId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
   private readonly inventarioMonedaId = '550e8400-e29b-41d4-a716-446655440000';
   private readonly tiendaIds = [
     'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
     'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbc',
+  ];
+  /** Pool efectivo de tiendas/zonas para el load seed (configurable en load-seed.yaml). */
+  private effectiveTiendaIds: string[] = this.tiendaIds;
+  private zonaNames: string[] | null = null;
+  private paretoDist: ParetoConfig | null = null;
+  private readonly zonaBaseNames = [
+    'Zona Norte',
+    'Zona Sur',
+    'Zona Oriente',
+    'Zona Occidente',
+    'Zona Centro',
   ];
   private readonly categorias = ['Categoria 1', 'Categoria 2', 'Categoria 3'];
   private readonly marcas = ['Marca A', 'Marca B', 'Marca C', 'Marca D'];
@@ -172,6 +198,8 @@ export class DatabaseSeederService implements OnModuleInit {
     ) as LoadSeedConfig;
     const loadConfig = config.load ?? {};
 
+    this.configureDistribution(loadConfig);
+
     return LOAD_SEED_KEYS.reduce(
       (counts, key) => ({
         ...counts,
@@ -179,6 +207,112 @@ export class DatabaseSeederService implements OnModuleInit {
       }),
       {} as LoadSeedCounts,
     );
+  }
+
+  /**
+   * Configura el pool de tiendas, la lista de zonas y la distribución
+   * (uniforme o pareto) a partir de las llaves opcionales `tiendas`, `zonas`
+   * y `distribucion` de load-seed.yaml. Sin esas llaves el seeder se comporta
+   * igual que antes (2 tiendas fijas, una zona única por catálogo, round-robin).
+   */
+  private configureDistribution(
+    loadConfig: NonNullable<LoadSeedConfig['load']>,
+  ): void {
+    const { tiendas, zonas, distribucion } = loadConfig;
+
+    if (tiendas !== undefined) {
+      if (
+        typeof tiendas !== 'number' ||
+        !Number.isInteger(tiendas) ||
+        tiendas < this.tiendaIds.length
+      ) {
+        throw new Error(
+          `Invalid load-seed count for "tiendas": ${String(tiendas)} (mínimo ${this.tiendaIds.length})`,
+        );
+      }
+      this.effectiveTiendaIds = [
+        ...this.tiendaIds,
+        ...Array.from(
+          { length: tiendas - this.tiendaIds.length },
+          (_, i) => `eeeeeeee-0000-4000-8000-${String(i + 1).padStart(12, '0')}`,
+        ),
+      ];
+    }
+
+    if (zonas !== undefined) {
+      if (typeof zonas !== 'number' || !Number.isInteger(zonas) || zonas < 1) {
+        throw new Error(`Invalid load-seed count for "zonas": ${String(zonas)}`);
+      }
+      this.zonaNames = Array.from({ length: zonas }, (_, i) =>
+        i < this.zonaBaseNames.length ? this.zonaBaseNames[i] : `Zona ${i + 1}`,
+      );
+    }
+
+    if (distribucion !== undefined) {
+      const tipo = distribucion.tipo ?? 'uniforme';
+      if (tipo === 'pareto') {
+        const pesoCabeza = this.parseFraction(
+          distribucion.peso_cabeza,
+          'distribucion.peso_cabeza',
+          0.8,
+        );
+        const fraccionCabeza = this.parseFraction(
+          distribucion.fraccion_cabeza,
+          'distribucion.fraccion_cabeza',
+          0.2,
+        );
+        this.paretoDist = { pesoCabeza, fraccionCabeza };
+      } else if (tipo !== 'uniforme') {
+        throw new Error(
+          `Invalid load-seed "distribucion.tipo": ${String(tipo)} (use "uniforme" o "pareto")`,
+        );
+      }
+    }
+  }
+
+  private parseFraction(
+    value: unknown,
+    key: string,
+    defaultValue: number,
+  ): number {
+    if (value === undefined) return defaultValue;
+    if (typeof value !== 'number' || value <= 0 || value >= 1) {
+      throw new Error(
+        `Invalid load-seed "${key}": ${String(value)} (debe estar entre 0 y 1)`,
+      );
+    }
+    return value;
+  }
+
+  /**
+   * Asigna un elemento del pool según la distribución configurada.
+   * - Uniforme (default): round-robin, igual que el comportamiento original.
+   * - Pareto: una fracción "cabeza" del pool (fraccion_cabeza) recibe
+   *   peso_cabeza de las asignaciones; el resto se reparte en la cola.
+   *   La asignación es determinística para que los reseeds sean idempotentes.
+   */
+  private pickAssigned<T>(list: T[], index: number): T {
+    if (list.length <= 1) return list[0];
+    if (!this.paretoDist) return list[index % list.length];
+
+    const headCount = Math.max(
+      1,
+      Math.min(
+        list.length - 1,
+        Math.round(list.length * this.paretoDist.fraccionCabeza),
+      ),
+    );
+    const tailCount = list.length - headCount;
+    const headTickets = Math.max(
+      1,
+      Math.min(9, Math.round(this.paretoDist.pesoCabeza * 10)),
+    );
+    const cycle = Math.floor(index / 10);
+
+    if (index % 10 < headTickets) {
+      return list[cycle % headCount];
+    }
+    return list[headCount + (cycle % tailCount)];
   }
 
   private parseCount(value: unknown, key: LoadSeedKey): number {
@@ -262,10 +396,12 @@ export class DatabaseSeederService implements OnModuleInit {
       'INSERT INTO catalogos (id, "tiendaId", "vigenciaDesde", "vigenciaHasta", zona) VALUES',
       insertedIds.map((id, index) => [
         id,
-        this.tiendaIds[index % this.tiendaIds.length],
+        this.pickAssigned(this.effectiveTiendaIds, startIndex + index),
         '2026-01-01 00:00:00',
         '2026-12-31 23:59:59',
-        `Zona Load ${startIndex + index + 1}`,
+        this.zonaNames
+          ? this.pickAssigned(this.zonaNames, startIndex + index)
+          : `Zona Load ${startIndex + index + 1}`,
       ]),
     );
 
@@ -326,16 +462,21 @@ export class DatabaseSeederService implements OnModuleInit {
     await this.batchInsert(
       queryRunner,
       'INSERT INTO promociones (id, nombre, "precioPromocional", "monedaId", "productoId", inicio, fin, restricciones) VALUES',
-      insertedPromocionIds.map((id, index) => [
-        id,
-        `Promo Load ${startIndex + index + 1}`,
-        (5 + (index % 40)).toFixed(2),
-        this.logisticaMonedaId,
-        productoIds[index % productoIds.length],
-        '2026-03-01 00:00:00',
-        '2026-06-30 23:59:59',
-        (index % 200) + 1,
-      ]),
+      insertedPromocionIds.map((id, index) => {
+        // 70% de promociones vigentes hoy, 30% ya vencidas (histórico),
+        // con fechas relativas a NOW para que el escenario no caduque.
+        const activa = index % 10 < 7;
+        return [
+          id,
+          `Promo Load ${startIndex + index + 1}`,
+          (5 + (index % 40)).toFixed(2),
+          this.logisticaMonedaId,
+          productoIds[index % productoIds.length],
+          activa ? this.daysAgo(30) : this.daysAgo(120),
+          activa ? this.daysFromNow(30) : this.daysAgo(60),
+          (index % 200) + 1,
+        ];
+      }),
     );
 
     await this.batchInsert(
@@ -344,7 +485,7 @@ export class DatabaseSeederService implements OnModuleInit {
       insertedPromocionIds.map((promocionId, index) => [
         randomUUID(),
         promocionId,
-        this.tiendaIds[index % this.tiendaIds.length],
+        this.pickAssigned(this.effectiveTiendaIds, index),
       ]),
     );
   }
@@ -367,7 +508,7 @@ export class DatabaseSeederService implements OnModuleInit {
       insertedIds.map((id, index) => [
         id,
         `PED-LOAD-${String(startIndex + index + 1).padStart(5, '0')}`,
-        this.tiendaIds[index % this.tiendaIds.length],
+        this.pickAssigned(this.effectiveTiendaIds, startIndex + index),
         this.daysAgo(missingCount - index),
         (20 + (index % 200)).toFixed(2),
         this.logisticaMonedaId,
@@ -400,7 +541,7 @@ export class DatabaseSeederService implements OnModuleInit {
       this.uuids(missingCount).map((id, index) => [
         id,
         pedidoIds[index % pedidoIds.length],
-        productoIds[index % productoIds.length],
+        this.pickAssigned(productoIds, index),
         (index % 10) + 1,
         (10 + (index % 90)).toFixed(2),
         '0.00',
@@ -787,6 +928,10 @@ export class DatabaseSeederService implements OnModuleInit {
 
   private uuids(count: number): string[] {
     return Array.from({ length: count }, () => randomUUID());
+  }
+
+  private daysFromNow(days: number): string {
+    return this.daysAgo(-days);
   }
 
   private daysAgo(days: number): string {

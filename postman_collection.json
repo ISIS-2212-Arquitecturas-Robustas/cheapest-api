@@ -1808,59 +1808,59 @@
     },
     {
       "key": "producto_id",
-      "value": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+      "value": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
     },
     {
       "key": "tienda_id",
-      "value": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+      "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
     },
     {
       "key": "moneda_id",
-      "value": "cccccccc-cccc-cccc-cccc-cccccccccccc"
+      "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
     },
     {
       "key": "item_id",
-      "value": "11111111-1111-1111-1111-111111111111"
+      "value": "11111111-1111-4111-8111-111111111111"
     },
     {
       "key": "compra_id",
-      "value": "dddddddd-dddd-dddd-dddd-dddddddddddd"
+      "value": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
     },
     {
       "key": "venta_id",
-      "value": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"
+      "value": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee"
     },
     {
       "key": "compra_registro_id",
-      "value": "c1111111-1111-1111-1111-111111111111"
+      "value": "c1111111-1111-4111-8111-111111111111"
     },
     {
       "key": "venta_registro_id",
-      "value": "v1111111-1111-1111-1111-111111111111"
+      "value": "f1111111-1111-4111-8111-111111111111"
     },
     {
       "key": "catalogo_id",
-      "value": "cat11111-1111-1111-1111-111111111111"
+      "value": "ca711111-1111-4111-8111-111111111111"
     },
     {
       "key": "despacho_id",
-      "value": "des11111-1111-1111-1111-111111111111"
+      "value": "de511111-1111-4111-8111-111111111111"
     },
     {
       "key": "pedido_id",
-      "value": "ped11111-1111-1111-1111-111111111111"
+      "value": "ed111111-1111-4111-8111-111111111111"
     },
     {
       "key": "promocion_id",
-      "value": "pro11111-1111-1111-1111-111111111111"
+      "value": "f0a11111-1111-4111-8111-111111111111"
     },
     {
       "key": "nota_credito_id",
-      "value": "not11111-1111-1111-1111-111111111111"
+      "value": "a0c11111-1111-4111-8111-111111111111"
     },
     {
       "key": "disponibilidad_zona_id",
-      "value": "dis11111-1111-1111-1111-111111111111"
+      "value": "d2111111-1111-4111-8111-111111111111"
     },
     {
       "key": "producto_externo_id",
