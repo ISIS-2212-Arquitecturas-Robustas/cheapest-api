@@ -9,21 +9,19 @@ export class EventoPedidoRepository {
     private readonly repository: Repository<EventoPedido>,
   ) {}
 
-  // TODO (estudiante): Implementar nextVersion() y appendEvent()
-  // nextVersion() debe retornar el siguiente número de versión para un pedidoId dado.
-  // appendEvent() debe persistir un nuevo evento en la tabla eventos_pedido.
-
   async nextVersion(pedidoId: string): Promise<number> {
-    // TODO: buscar el último evento del pedido ordenado por version DESC
-    // Si no existe ninguno, retornar 1
-    throw new Error('Not implemented — completa este método');
+    const lastEvent = await this.repository.findOne({
+      where: { pedidoId },
+      order: { version: 'DESC' },
+    });
+    return lastEvent ? lastEvent.version + 1 : 1;
   }
 
   async appendEvent(
     data: Omit<EventoPedido, 'id' | 'createdAt'>,
   ): Promise<EventoPedido> {
-    // TODO: crear y guardar el evento usando this.repository
-    throw new Error('Not implemented — completa este método');
+    const entity = this.repository.create(data);
+    return this.repository.save(entity);
   }
 
   async findByPedidoId(pedidoId: string): Promise<EventoPedido[]> {
