@@ -13,13 +13,20 @@ export class EventBridgeService {
 
   constructor() {
     this.busName = process.env.EVENTBRIDGE_BUS_NAME ?? 'cheapest-bus';
+    // Ver nota en libs/shared/dynamo/src/dynamo.service.ts: credenciales
+    // explícitas solo para LocalStack; en ECS deben omitirse para que el SDK
+    // use el rol de la tarea.
     this.client = new EventBridgeClient({
       region: process.env.AWS_REGION ?? 'us-east-1',
       endpoint: process.env.AWS_ENDPOINT_URL,
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? 'test',
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? 'test',
-      },
+      ...(process.env.AWS_ACCESS_KEY_ID
+        ? {
+            credentials: {
+              accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+              secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? 'test',
+            },
+          }
+        : {}),
     });
   }
 
