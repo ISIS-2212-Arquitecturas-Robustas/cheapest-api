@@ -16,8 +16,12 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/",
-              "host": ["{{base_url}}"],
-              "path": [""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                ""
+              ]
             },
             "description": "Health check endpoint to verify API is running"
           },
@@ -44,8 +48,13 @@
             },
             "url": {
               "raw": "{{base_url}}/inventory/items",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "items"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "items"
+              ]
             },
             "description": "Create a new inventory item"
           },
@@ -58,8 +67,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/items",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "items"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "items"
+              ]
             },
             "description": "Get all inventory items (supports query parameters)"
           },
@@ -72,8 +86,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/items?productoId={{producto_id}}&tiendaId={{tienda_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "items"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "items"
+              ],
               "query": [
                 {
                   "key": "productoId",
@@ -98,8 +117,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/items/{{item_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "items", "{{item_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "items",
+                "{{item_id}}"
+              ]
             },
             "description": "Get a specific inventory item by ID"
           },
@@ -121,8 +146,14 @@
             },
             "url": {
               "raw": "{{base_url}}/inventory/items/{{item_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "items", "{{item_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "items",
+                "{{item_id}}"
+              ]
             },
             "description": "Update an inventory item (partial update)"
           },
@@ -135,8 +166,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/items/{{item_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "items", "{{item_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "items",
+                "{{item_id}}"
+              ]
             },
             "description": "Delete an inventory item"
           },
@@ -163,8 +200,13 @@
             },
             "url": {
               "raw": "{{base_url}}/inventory/compras",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "compras"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "compras"
+              ]
             },
             "description": "Create a new purchase record"
           },
@@ -177,8 +219,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/compras",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "compras"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "compras"
+              ]
             },
             "description": "Get all purchase records (supports query parameters)"
           },
@@ -191,8 +238,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/compras?tiendaId={{tienda_id}}&productoId={{producto_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "compras"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "compras"
+              ],
               "query": [
                 {
                   "key": "tiendaId",
@@ -217,8 +269,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/compras/{{compra_registro_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "compras", "{{compra_registro_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "compras",
+                "{{compra_registro_id}}"
+              ]
             },
             "description": "Get a specific purchase record by ID"
           },
@@ -240,8 +298,14 @@
             },
             "url": {
               "raw": "{{base_url}}/inventory/compras/{{compra_registro_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "compras", "{{compra_registro_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "compras",
+                "{{compra_registro_id}}"
+              ]
             },
             "description": "Update a purchase record (partial update)"
           },
@@ -254,8 +318,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/compras/{{compra_registro_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "compras", "{{compra_registro_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "compras",
+                "{{compra_registro_id}}"
+              ]
             },
             "description": "Delete a purchase record"
           },
@@ -282,8 +352,13 @@
             },
             "url": {
               "raw": "{{base_url}}/inventory/ventas",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "ventas"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "ventas"
+              ]
             },
             "description": "Create a new sale record"
           },
@@ -296,8 +371,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/ventas",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "ventas"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "ventas"
+              ]
             },
             "description": "Get all sale records (supports query parameters)"
           },
@@ -310,8 +390,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/ventas?tiendaId={{tienda_id}}&productoId={{producto_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "ventas"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "ventas"
+              ],
               "query": [
                 {
                   "key": "tiendaId",
@@ -336,8 +421,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/ventas/{{venta_registro_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "ventas", "{{venta_registro_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "ventas",
+                "{{venta_registro_id}}"
+              ]
             },
             "description": "Get a specific sale record by ID"
           },
@@ -359,8 +450,14 @@
             },
             "url": {
               "raw": "{{base_url}}/inventory/ventas/{{venta_registro_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "ventas", "{{venta_registro_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "ventas",
+                "{{venta_registro_id}}"
+              ]
             },
             "description": "Update a sale record (partial update)"
           },
@@ -373,8 +470,14 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/inventory/ventas/{{venta_registro_id}}",
-              "host": ["{{base_url}}"],
-              "path": ["inventory", "ventas", "{{venta_registro_id}}"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "ventas",
+                "{{venta_registro_id}}"
+              ]
             },
             "description": "Delete a sale record"
           },
@@ -404,8 +507,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/catalogos",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "catalogos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "catalogos"
+                  ]
                 },
                 "description": "Create a new catalogo"
               },
@@ -418,8 +526,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/catalogos",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "catalogos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "catalogos"
+                  ]
                 },
                 "description": "Get all catalogos"
               },
@@ -432,8 +545,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/catalogos/{{catalogo_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "catalogos", "{{catalogo_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "catalogos",
+                    "{{catalogo_id}}"
+                  ]
                 },
                 "description": "Get a specific catalogo by ID"
               },
@@ -455,8 +574,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/catalogos/{{catalogo_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "catalogos", "{{catalogo_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "catalogos",
+                    "{{catalogo_id}}"
+                  ]
                 },
                 "description": "Update a catalogo"
               },
@@ -469,8 +594,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/catalogos/{{catalogo_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "catalogos", "{{catalogo_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "catalogos",
+                    "{{catalogo_id}}"
+                  ]
                 },
                 "description": "Delete a catalogo"
               },
@@ -497,7 +628,9 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/catalogos/{{catalogo_id}}/productos",
-                  "host": ["{{base_url}}"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
                   "path": [
                     "logistics",
                     "catalogos",
@@ -516,7 +649,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/catalogos/{{catalogo_id}}/productos",
-                  "host": ["{{base_url}}"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
                   "path": [
                     "logistics",
                     "catalogos",
@@ -535,7 +670,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/catalogos/{{catalogo_id}}/productos/{{producto_id}}",
-                  "host": ["{{base_url}}"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
                   "path": [
                     "logistics",
                     "catalogos",
@@ -569,8 +706,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/despachos",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "despachos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "despachos"
+                  ]
                 },
                 "description": "Create a new despacho"
               },
@@ -583,8 +725,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/despachos",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "despachos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "despachos"
+                  ]
                 },
                 "description": "Get all despachos"
               },
@@ -597,8 +744,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/despachos/{{despacho_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "despachos", "{{despacho_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "despachos",
+                    "{{despacho_id}}"
+                  ]
                 },
                 "description": "Get a specific despacho by ID"
               },
@@ -620,8 +773,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/despachos/{{despacho_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "despachos", "{{despacho_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "despachos",
+                    "{{despacho_id}}"
+                  ]
                 },
                 "description": "Update a despacho"
               },
@@ -634,8 +793,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/despachos/{{despacho_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "despachos", "{{despacho_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "despachos",
+                    "{{despacho_id}}"
+                  ]
                 },
                 "description": "Delete a despacho"
               },
@@ -662,8 +827,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/disponibilidad-zona",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "disponibilidad-zona"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "disponibilidad-zona"
+                  ]
                 },
                 "description": "Create a new disponibilidad zona"
               },
@@ -676,8 +846,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/disponibilidad-zona",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "disponibilidad-zona"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "disponibilidad-zona"
+                  ]
                 },
                 "description": "Get all disponibilidad zona"
               },
@@ -690,7 +865,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/disponibilidad-zona/{{disponibilidad_zona_id}}",
-                  "host": ["{{base_url}}"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
                   "path": [
                     "logistics",
                     "disponibilidad-zona",
@@ -717,7 +894,9 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/disponibilidad-zona/{{disponibilidad_zona_id}}",
-                  "host": ["{{base_url}}"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
                   "path": [
                     "logistics",
                     "disponibilidad-zona",
@@ -735,7 +914,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/disponibilidad-zona/{{disponibilidad_zona_id}}",
-                  "host": ["{{base_url}}"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
                   "path": [
                     "logistics",
                     "disponibilidad-zona",
@@ -767,8 +948,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/notas-credito",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "notas-credito"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "notas-credito"
+                  ]
                 },
                 "description": "Create a new nota credito"
               },
@@ -781,8 +967,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/notas-credito",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "notas-credito"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "notas-credito"
+                  ]
                 },
                 "description": "Get all notas credito"
               },
@@ -795,8 +986,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/notas-credito/{{nota_credito_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "notas-credito", "{{nota_credito_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "notas-credito",
+                    "{{nota_credito_id}}"
+                  ]
                 },
                 "description": "Get a specific nota credito by ID"
               },
@@ -818,8 +1015,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/notas-credito/{{nota_credito_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "notas-credito", "{{nota_credito_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "notas-credito",
+                    "{{nota_credito_id}}"
+                  ]
                 },
                 "description": "Update a nota credito"
               },
@@ -832,8 +1035,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/notas-credito/{{nota_credito_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "notas-credito", "{{nota_credito_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "notas-credito",
+                    "{{nota_credito_id}}"
+                  ]
                 },
                 "description": "Delete a nota credito"
               },
@@ -860,8 +1069,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/pedidos",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "pedidos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "pedidos"
+                  ]
                 },
                 "description": "Create a new pedido"
               },
@@ -874,8 +1088,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/pedidos",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "pedidos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "pedidos"
+                  ]
                 },
                 "description": "Get all pedidos"
               },
@@ -888,8 +1107,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/pedidos/{{pedido_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "pedidos", "{{pedido_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "pedidos",
+                    "{{pedido_id}}"
+                  ]
                 },
                 "description": "Get a specific pedido by ID"
               },
@@ -911,8 +1136,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/pedidos/{{pedido_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "pedidos", "{{pedido_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "pedidos",
+                    "{{pedido_id}}"
+                  ]
                 },
                 "description": "Update a pedido"
               },
@@ -925,8 +1156,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/pedidos/{{pedido_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "pedidos", "{{pedido_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "pedidos",
+                    "{{pedido_id}}"
+                  ]
                 },
                 "description": "Delete a pedido"
               },
@@ -953,8 +1190,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/productos",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "productos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "productos"
+                  ]
                 },
                 "description": "Create a new producto"
               },
@@ -967,8 +1209,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/productos",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "productos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "productos"
+                  ]
                 },
                 "description": "Get all productos"
               },
@@ -981,8 +1228,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/productos/{{producto_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "productos", "{{producto_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "productos",
+                    "{{producto_id}}"
+                  ]
                 },
                 "description": "Get a specific producto by ID"
               },
@@ -1004,8 +1257,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/productos/{{producto_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "productos", "{{producto_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "productos",
+                    "{{producto_id}}"
+                  ]
                 },
                 "description": "Update a producto"
               },
@@ -1018,8 +1277,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/productos/{{producto_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "productos", "{{producto_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "productos",
+                    "{{producto_id}}"
+                  ]
                 },
                 "description": "Delete a producto"
               },
@@ -1046,8 +1311,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/promociones",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "promociones"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "promociones"
+                  ]
                 },
                 "description": "Create a new promocion"
               },
@@ -1060,8 +1330,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/promociones",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "promociones"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "promociones"
+                  ]
                 },
                 "description": "Get all promociones"
               },
@@ -1074,8 +1349,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/promociones/{{promocion_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "promociones", "{{promocion_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "promociones",
+                    "{{promocion_id}}"
+                  ]
                 },
                 "description": "Get a specific promocion by ID"
               },
@@ -1097,8 +1378,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/logistics/promociones/{{promocion_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "promociones", "{{promocion_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "promociones",
+                    "{{promocion_id}}"
+                  ]
                 },
                 "description": "Update a promocion"
               },
@@ -1111,8 +1398,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/logistics/promociones/{{promocion_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["logistics", "promociones", "{{promocion_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "logistics",
+                    "promociones",
+                    "{{promocion_id}}"
+                  ]
                 },
                 "description": "Delete a promocion"
               },
@@ -1144,8 +1437,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/ventas/productos-externos",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "productos-externos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "productos-externos"
+                  ]
                 },
                 "description": "Create a new external product"
               },
@@ -1158,8 +1456,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/ventas/productos-externos",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "productos-externos"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "productos-externos"
+                  ]
                 },
                 "description": "Get all external products (supports query parameters)"
               },
@@ -1172,8 +1475,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/ventas/productos-externos?tiendaId={{tienda_id}}&categoria=Bebidas&nombre=Coca",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "productos-externos"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "productos-externos"
+                  ],
                   "query": [
                     {
                       "key": "tiendaId",
@@ -1209,7 +1517,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/ventas/productos-externos/{{producto_externo_id}}",
-                  "host": ["{{base_url}}"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
                   "path": [
                     "ventas",
                     "productos-externos",
@@ -1236,7 +1546,9 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/ventas/productos-externos/{{producto_externo_id}}",
-                  "host": ["{{base_url}}"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
                   "path": [
                     "ventas",
                     "productos-externos",
@@ -1254,7 +1566,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/ventas/productos-externos/{{producto_externo_id}}",
-                  "host": ["{{base_url}}"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
                   "path": [
                     "ventas",
                     "productos-externos",
@@ -1286,8 +1600,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/ventas/ventas",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "ventas"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "ventas"
+                  ]
                 },
                 "description": "Create a new sale with items. Total is automatically calculated."
               },
@@ -1300,8 +1619,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/ventas/ventas",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "ventas"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "ventas"
+                  ]
                 },
                 "description": "Get all sales (supports query parameters)"
               },
@@ -1314,8 +1638,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/ventas/ventas?tiendaId={{tienda_id}}&fechaDesde=2026-01-01T00:00:00.000Z&fechaHasta=2026-12-31T23:59:59.999Z",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "ventas"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "ventas"
+                  ],
                   "query": [
                     {
                       "key": "tiendaId",
@@ -1351,8 +1680,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/ventas/ventas/{{venta_ventas_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "ventas", "{{venta_ventas_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "ventas",
+                    "{{venta_ventas_id}}"
+                  ]
                 },
                 "description": "Get a specific sale by ID with all items"
               },
@@ -1374,8 +1709,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/ventas/ventas/{{venta_ventas_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "ventas", "{{venta_ventas_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "ventas",
+                    "{{venta_ventas_id}}"
+                  ]
                 },
                 "description": "Update sale items (replaces all items, recalculates total)"
               },
@@ -1397,8 +1738,14 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/ventas/ventas/{{venta_ventas_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "ventas", "{{venta_ventas_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "ventas",
+                    "{{venta_ventas_id}}"
+                  ]
                 },
                 "description": "Update sale date/time only (total unchanged)"
               },
@@ -1411,8 +1758,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{base_url}}/ventas/ventas/{{venta_ventas_id}}",
-                  "host": ["{{base_url}}"],
-                  "path": ["ventas", "ventas", "{{venta_ventas_id}}"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ventas",
+                    "ventas",
+                    "{{venta_ventas_id}}"
+                  ]
                 },
                 "description": "Delete a sale (cascade deletes all items)"
               },
@@ -1441,7 +1794,7 @@
     },
     {
       "key": "moneda_id",
-      "value": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "value": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
       "type": "string"
     },
     {

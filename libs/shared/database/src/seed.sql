@@ -30,10 +30,10 @@ INSERT INTO registros_venta_producto_tienda (id, "tiendaId", "productoId", "vent
 
 -- Productos (Logística)
 INSERT INTO productos (id, "codigoInterno", "codigoBarras", nombre, marca, categoria, presentacion, "precioBase", "monedaId", "createdAt", "updatedAt") VALUES
-('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'PROD001', '1234567890123', 'Producto Ejemplo 1', 'Marca A', 'Categoria 1', 'Caja 10 unidades', 25.50, 'cccccccc-cccc-cccc-cccc-cccccccccccc', NOW(), NOW()),
-('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaab', 'PROD002', '1234567890124', 'Producto Ejemplo 2', 'Marca B', 'Categoria 1', 'Bolsa 5 kg', 15.75, 'cccccccc-cccc-cccc-cccc-cccccccccccc', NOW(), NOW()),
-('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaac', 'PROD003', '1234567890125', 'Producto Ejemplo 3', 'Marca A', 'Categoria 2', 'Botella 1L', 10.00, 'cccccccc-cccc-cccc-cccc-cccccccccccc', NOW(), NOW()),
-('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaad', 'PROD004', '1234567890126', 'Producto Ejemplo 4', 'Marca C', 'Categoria 2', 'Paquete 20 unidades', 45.99, 'cccccccc-cccc-cccc-cccc-cccccccccccc', NOW(), NOW());
+('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'PROD001', '1234567890123', 'Producto Ejemplo 1', 'Marca A', 'Categoria 1', 'Caja 10 unidades', 25.50, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', NOW(), NOW()),
+('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaab', 'PROD002', '1234567890124', 'Producto Ejemplo 2', 'Marca B', 'Categoria 1', 'Bolsa 5 kg', 15.75, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', NOW(), NOW()),
+('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaac', 'PROD003', '1234567890125', 'Producto Ejemplo 3', 'Marca A', 'Categoria 2', 'Botella 1L', 10.00, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', NOW(), NOW()),
+('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaad', 'PROD004', '1234567890126', 'Producto Ejemplo 4', 'Marca C', 'Categoria 2', 'Paquete 20 unidades', 45.99, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', NOW(), NOW());
 
 -- Catálogos
 INSERT INTO catalogos (id, "tiendaId", "vigenciaDesde", "vigenciaHasta", zona, "createdAt", "updatedAt") VALUES
@@ -50,20 +50,20 @@ INSERT INTO "catalogos_productos_productos" ("catalogosId", "productosId") VALUE
 
 -- Promociones
 INSERT INTO promociones (id, nombre, "precioPromocional", "monedaId", "productoId", "tiendaIds", inicio, fin, restricciones, "createdAt", "updatedAt") VALUES
-('f0011111-1111-1111-1111-111111111111', 'Promoción Producto 1', 20.00, 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '["bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"]', '2026-02-01 00:00:00', '2026-02-28 23:59:59', 100, NOW(), NOW()),
-('f0022222-2222-2222-2222-222222222222', 'Promoción Producto 2', 12.00, 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaab', '["bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbc"]', '2026-02-01 00:00:00', '2026-02-28 23:59:59', 50, NOW(), NOW());
+('f0011111-1111-1111-1111-111111111111', 'Promoción Producto 1', 20.00, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '["bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"]', NOW() - INTERVAL '30 days', NOW() + INTERVAL '30 days', 100, NOW(), NOW()),
+('f0022222-2222-2222-2222-222222222222', 'Promoción Producto 2', 12.00, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaab', '["bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbc"]', NOW() - INTERVAL '30 days', NOW() + INTERVAL '30 days', 50, NOW(), NOW());
 
 -- Pedidos
 INSERT INTO pedidos (id, identificador, "tiendaId", "fechaHoraCreacion", "montoTotal", "monedaId", estado, "createdAt", "updatedAt") VALUES
-('fed11111-1111-1111-1111-111111111111', 'PED-001', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', '2026-02-03 10:00:00', 45.50, 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'creado', NOW(), NOW()),
-('fed22222-2222-2222-2222-222222222222', 'PED-002', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbc', '2026-02-03 11:00:00', 75.75, 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'aprobado', NOW(), NOW());
+('fed11111-1111-1111-1111-111111111111', 'PED-001', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', '2026-02-03 10:00:00', 45.50, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'creado', NOW(), NOW()),
+('fed22222-2222-2222-2222-222222222222', 'PED-002', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbc', '2026-02-03 11:00:00', 75.75, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'aprobado', NOW(), NOW());
 
 -- Items de Pedido
 INSERT INTO items_pedido (id, "pedidoId", "productoId", cantidad, "precioUnitario", descuento, "monedaId", lote, "fechaVencimiento", "createdAt", "updatedAt") VALUES
-('af111111-1111-1111-1111-111111111111', 'fed11111-1111-1111-1111-111111111111', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 1, 25.50, 0.00, 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'LOTE001', '2026-12-31', NOW(), NOW()),
-('af222222-2222-2222-2222-222222222222', 'fed11111-1111-1111-1111-111111111111', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaab', 1, 20.00, 0.00, 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'LOTE002', '2026-12-31', NOW(), NOW()),
-('af333333-3333-3333-3333-333333333333', 'fed22222-2222-2222-2222-222222222222', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 2, 25.50, 0.00, 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'LOTE003', '2026-12-31', NOW(), NOW()),
-('af444444-4444-4444-4444-444444444444', 'fed22222-2222-2222-2222-222222222222', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaad', 1, 45.99, 0.00, 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'LOTE004', '2026-12-31', NOW(), NOW());
+('af111111-1111-1111-1111-111111111111', 'fed11111-1111-1111-1111-111111111111', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 1, 25.50, 0.00, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'LOTE001', '2026-12-31', NOW(), NOW()),
+('af222222-2222-2222-2222-222222222222', 'fed11111-1111-1111-1111-111111111111', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaab', 1, 20.00, 0.00, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'LOTE002', '2026-12-31', NOW(), NOW()),
+('af333333-3333-3333-3333-333333333333', 'fed22222-2222-2222-2222-222222222222', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 2, 25.50, 0.00, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'LOTE003', '2026-12-31', NOW(), NOW()),
+('af444444-4444-4444-4444-444444444444', 'fed22222-2222-2222-2222-222222222222', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaad', 1, 45.99, 0.00, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'LOTE004', '2026-12-31', NOW(), NOW());
 
 -- Despachos
 INSERT INTO despachos (id, "pedidoId", bodega, "horaSalida", "ventanaPrometidaInicio", "ventanaPrometidaFin", "createdAt", "updatedAt") VALUES
@@ -78,4 +78,4 @@ INSERT INTO disponibilidad_zona (id, "catalogoId", "productoId", "cantidadDispon
 
 -- Notas de Crédito
 INSERT INTO notas_credito (id, "pedidoId", "numeroDocumento", fecha, motivo, monto, "monedaId", evidencia, "createdAt", "updatedAt") VALUES
-('a0f11111-1111-1111-1111-111111111111', 'fed11111-1111-1111-1111-111111111111', 'NC-001', '2026-02-04', 'productoVencido', 5.50, 'cccccccc-cccc-cccc-cccc-cccccccccccc', 'Producto vencido en entrega', NOW(), NOW());
+('a0f11111-1111-1111-1111-111111111111', 'fed11111-1111-1111-1111-111111111111', 'NC-001', '2026-02-04', 'productoVencido', 5.50, 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'Producto vencido en entrega', NOW(), NOW());
