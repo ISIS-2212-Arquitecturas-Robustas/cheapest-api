@@ -9,6 +9,7 @@ import {
   Query,
   ValidationPipe,
 } from '@nestjs/common';
+import { Public } from '../../../shared/auth/src';
 import {
   CreateProductoDto,
   ProductoResponseDto,
@@ -37,6 +38,10 @@ export class ProductoController {
     return this.productoService.findAll(query);
   }
 
+  // Público: Ventas e Inventario llaman este endpoint internamente
+  // (LogisticaProductosClient.exists) para validar productos sin portar un JWT
+  // de usuario — es una llamada servicio-a-servicio, no una acción de un tendero.
+  @Public()
   @Get(':id')
   async findById(@Param('id') id: string): Promise<ProductoResponseDto> {
     return this.productoService.findById(id);
