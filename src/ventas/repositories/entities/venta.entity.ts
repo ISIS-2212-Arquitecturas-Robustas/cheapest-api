@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -9,6 +10,7 @@ import {
 import { ItemVenta } from './item-venta.entity';
 
 @Entity('ventas')
+@Index('idx_ventas_tienda_fecha', ['tiendaId', 'fechaHora'])
 export class Venta {
   @PrimaryGeneratedColumn('uuid')
   id: string;
