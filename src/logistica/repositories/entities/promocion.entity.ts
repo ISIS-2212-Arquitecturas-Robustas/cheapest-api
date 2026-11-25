@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -12,6 +13,7 @@ import { Producto } from './producto.entity';
 import { PromocionTienda } from './promocion-tienda.entity';
 
 @Entity('promociones')
+@Index('idx_promociones_producto_vigencia', ['productoId', 'inicio', 'fin'])
 export class Promocion {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -47,9 +49,13 @@ export class Promocion {
   @JoinColumn({ name: 'productoId' })
   producto: Producto;
 
-  @OneToMany(() => PromocionTienda, (promocionTienda) => promocionTienda.promocion, {
-    cascade: true,
-    eager: true,
-  })
+  @OneToMany(
+    () => PromocionTienda,
+    (promocionTienda) => promocionTienda.promocion,
+    {
+      cascade: true,
+      eager: true,
+    },
+  )
   tiendas: PromocionTienda[];
 }

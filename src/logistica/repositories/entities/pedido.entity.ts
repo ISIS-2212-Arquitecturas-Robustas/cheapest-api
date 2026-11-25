@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -22,6 +23,7 @@ export enum EstadoPedido {
 }
 
 @Entity('pedidos')
+@Index('idx_pedidos_tienda', ['tiendaId'])
 export class Pedido {
   @PrimaryGeneratedColumn('uuid')
   id: string;
