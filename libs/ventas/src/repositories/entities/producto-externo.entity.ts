@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   EntitySchema,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -10,6 +11,8 @@ import {
 import { ItemVenta } from './item-venta.entity';
 
 @Entity('productos_externos')
+@Index('idx_productos_externos_tienda', ['tiendaId'])
+@Index('idx_productos_externos_codigo_barras', ['codigoBarras'])
 export class ProductoExterno extends EntitySchema {
   @PrimaryGeneratedColumn('uuid')
   id: string;

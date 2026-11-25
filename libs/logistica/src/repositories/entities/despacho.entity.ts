@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -10,6 +11,7 @@ import {
 import { Pedido } from './pedido.entity';
 
 @Entity('despachos')
+@Index('idx_despachos_pedido', ['pedidoId'])
 export class Despacho {
   @PrimaryGeneratedColumn('uuid')
   id: string;
