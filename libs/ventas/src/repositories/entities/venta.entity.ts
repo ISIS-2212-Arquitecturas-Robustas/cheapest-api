@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   EntitySchema,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -10,6 +11,7 @@ import {
 import { ItemVenta } from './item-venta.entity';
 
 @Entity('ventas')
+@Index('idx_ventas_tienda_fecha', ['tiendaId', 'fechaHora'])
 export class Venta extends EntitySchema {
   @PrimaryGeneratedColumn('uuid')
   id: string;
