@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -16,6 +17,7 @@ export enum MotivoNotaCredito {
 }
 
 @Entity('notas_credito')
+@Index('idx_notas_credito_pedido', ['pedidoId'])
 export class NotaCredito {
   @PrimaryGeneratedColumn('uuid')
   id: string;

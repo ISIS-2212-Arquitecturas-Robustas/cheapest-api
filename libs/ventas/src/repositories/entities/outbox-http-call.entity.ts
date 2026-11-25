@@ -2,12 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 export type OutboxHttpCallStatus = 'PENDING' | 'DELIVERED' | 'FAILED';
 
 @Entity('outbox_http_calls')
+@Index('idx_outbox_http_calls_status_creado', ['status', 'createdAt'])
 export class OutboxHttpCall {
   @PrimaryGeneratedColumn('uuid')
   id: string; // también sirve como X-Idempotency-Key en la llamada a Inventario
